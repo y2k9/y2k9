@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earth Shapes — y2k9</title>
+  <link rel="icon" type="image/jpeg" href="../favicon.jpg" />
+  <link href="https://unpkg.com/maplibre-gl@4.3.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@4.3.2/dist/maplibre-gl.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+      color: #e8e8e8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    body { display: flex; }
+
+    /* ── Sidebar ─────────────────────────────────────────── */
+    #sidebar {
+      width: 272px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-right: 1px solid #1c1c1c;
+      z-index: 10;
+    }
+
+    #sidebar-header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid #1c1c1c;
+      flex-shrink: 0;
+    }
+
+    #back-link {
+      display: inline-block;
+      font-size: 10px;
+      color: #444;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      transition: color 0.15s;
+    }
+    #back-link:hover { color: #888; }
+
+    #sidebar-header h1 {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e8e8e8;
+      letter-spacing: -0.02em;
+    }
+
+    #sidebar-header p {
+      font-size: 11px;
+      color: #444;
+      margin-top: 4px;
+      line-height: 1.55;
+    }
+
+    /* ── Object list ─────────────────────────────────────── */
+    #objects-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+    #objects-list::-webkit-scrollbar { width: 0; }
+
+    .object-card {
+      padding: 13px 20px 13px 18px;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .object-card:hover { background: #0f0f0f; }
+    .object-card.selected {
+      background: #0f0f0f;
+      border-left-color: #e8e8e8;
+    }
+
+    .card-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #d8d8d8;
+      letter-spacing: -0.015em;
+    }
+    .card-sub {
+      font-size: 11px;
+      color: #444;
+      margin-top: 2px;
+    }
+    .object-card.selected .card-sub { color: #666; }
+
+    .card-desc {
+      font-size: 11px;
+      color: #555;
+      line-height: 1.55;
+      margin-top: 8px;
+      display: none;
+    }
+    .object-card.selected .card-desc { display: block; }
+
+    .card-coords {
+      font-size: 10px;
+      color: #383838;
+      margin-top: 7px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      display: none;
+    }
+    .object-card.selected .card-coords { display: block; }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    #sidebar-footer {
+      padding: 11px 20px;
+      border-top: 1px solid #1c1c1c;
+      font-size: 10px;
+      color: #2e2e2e;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    /* ── Map ─────────────────────────────────────────────── */
+    #map { flex: 1; height: 100%; }
+
+    .maplibregl-ctrl-bottom-right { display: none; }
+    .maplibregl-ctrl-bottom-left  { display: none; }
+    .maplibregl-ctrl-top-right    { display: none; }
+
+    .maplibregl-canvas { outline: none; }
+  </style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div id="sidebar-header">
+    <a id="back-link" href="../">← y2k9</a>
+    <h1>Earth Shapes</h1>
+    <p>Places on Earth that look like something else.</p>
+  </div>
+  <div id="objects-list"></div>
+  <div id="sidebar-footer">5 objects &nbsp;·&nbsp; imagery © Esri</div>
+</div>
+
+<div id="map"></div>
+
+<script>
+const OBJECTS = [
+  {
+    id: "richat",
+    name: "The Eye",
+    subtitle: "Richat Structure · Mauritania",
+    description: "A 50 km geological dome eroded to concentric rings of ancient rock. Appears to stare back from space.",
+    lat: 21.124,
+    lng: -11.399,
+    zoom: 9.2,
+  },
+  {
+    id: "kansas",
+    name: "The Grid",
+    subtitle: "Center-Pivot Irrigation · Kansas, USA",
+    description: "Thousands of perfect circles drawn by rotating irrigation booms across the flat Great Plains.",
+    lat: 37.685,
+    lng: -100.55,
+    zoom: 11.8,
+  },
+  {
+    id: "amazon",
+    name: "The Loop",
+    subtitle: "Ucayali River Meanders · Peru",
+    description: "The Amazon's tributaries coil into impossible loops, leaving crescent ghost lakes called oxbows.",
+    lat: -8.17,
+    lng: -74.51,
+    zoom: 11.2,
+  },
+  {
+    id: "namib",
+    name: "The Dunes",
+    subtitle: "Namib Desert · Namibia",
+    description: "Ancient star dunes casting long shadows across the world's oldest desert. Formed over 55 million years.",
+    lat: -24.73,
+    lng: 15.44,
+    zoom: 11.5,
+  },
+  {
+    id: "ganges",
+    name: "The Fan",
+    subtitle: "Ganges–Brahmaputra Delta · Bangladesh",
+    description: "The world's largest river delta — a fractal web of channels fanning into the Bay of Bengal.",
+    lat: 22.08,
+    lng: 89.62,
+    zoom: 8.2,
+  },
+];
+
+// ── Build sidebar cards ───────────────────────────────────
+const list = document.getElementById("objects-list");
+
+OBJECTS.forEach(obj => {
+  const card = document.createElement("div");
+  card.className = "object-card";
+  card.id = `card-${obj.id}`;
+  card.innerHTML = `
+    <div class="card-name">${obj.name}</div>
+    <div class="card-sub">${obj.subtitle}</div>
+    <div class="card-desc">${obj.description}</div>
+    <div class="card-coords">${formatCoord(obj.lat, "NS")} &nbsp; ${formatCoord(obj.lng, "EW")}</div>
+  `;
+  card.addEventListener("click", () => selectObject(obj.id));
+  list.appendChild(card);
+});
+
+function formatCoord(val, axis) {
+  const dir = axis === "NS" ? (val >= 0 ? "N" : "S") : (val >= 0 ? "E" : "W");
+  return `${Math.abs(val).toFixed(3)}° ${dir}`;
+}
+
+// ── Map ───────────────────────────────────────────────────
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    sources: {
+      satellite: {
+        type: "raster",
+        tiles: [
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        ],
+        tileSize: 256,
+        maxzoom: 19,
+        attribution: "© Esri, Maxar, Earthstar Geographics",
+      },
+    },
+    layers: [{
+      id: "satellite",
+      type: "raster",
+      source: "satellite",
+    }],
+  },
+  center: [20, 18],
+  zoom: 1.6,
+  maxZoom: 18,
+  minZoom: 1,
+  attributionControl: false,
+});
+
+let selectedId = null;
+let rotateRaf = null;
+let userInteracted = false;
+
+function startRotation() {
+  if (rotateRaf) return;
+  let bearing = map.getBearing();
+  function step() {
+    bearing -= 0.04;
+    map.setBearing(bearing);
+    rotateRaf = requestAnimationFrame(step);
+  }
+  rotateRaf = requestAnimationFrame(step);
+}
+
+function stopRotation() {
+  if (rotateRaf) {
+    cancelAnimationFrame(rotateRaf);
+    rotateRaf = null;
+  }
+}
+
+map.on("load", () => {
+  // Globe projection
+  try { map.setProjection("globe"); } catch (e) {
+    try { map.setProjection({ type: "globe" }); } catch (_) {}
+  }
+
+  // Atmosphere
+  try {
+    map.setFog({
+      range: [1, 10],
+      color: "#0a0a0a",
+      "high-color": "#080814",
+      "horizon-blend": 0.03,
+      "space-color": "#0a0a0a",
+      "star-intensity": 0.25,
+    });
+  } catch (_) {}
+
+  startRotation();
+});
+
+// Stop auto-rotate when user grabs the globe
+map.on("mousedown", () => { userInteracted = true; stopRotation(); });
+map.on("touchstart", () => { userInteracted = true; stopRotation(); });
+
+// ── Selection ─────────────────────────────────────────────
+function selectObject(id) {
+  const obj = OBJECTS.find(o => o.id === id);
+  if (!obj) return;
+
+  if (selectedId && selectedId !== id) {
+    document.getElementById(`card-${selectedId}`).classList.remove("selected");
+  }
+
+  const alreadySelected = selectedId === id;
+  selectedId = id;
+  document.getElementById(`card-${id}`).classList.add("selected");
+
+  if (!alreadySelected) {
+    stopRotation();
+    map.flyTo({
+      center: [obj.lng, obj.lat],
+      zoom: obj.zoom,
+      duration: 2800,
+      curve: 1.42,
+      essential: true,
+    });
+  }
+}
+</script>
+
+</body>
+</html>
