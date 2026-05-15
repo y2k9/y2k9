@@ -376,6 +376,16 @@
         text-shadow: 0 1px 12px rgba(0,0,0,0.45);
         z-index: 10;
         pointer-events: none;
+        line-height: 1.3;
+      }
+      #mobile-subtitle {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.55);
+        letter-spacing: 0.01em;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+        margin-top: 2px;
       }
 
       /* Floating card strip */
@@ -464,7 +474,7 @@
 
 <div id="map"></div>
 
-<div id="mobile-title">Earthgazing</div>
+<div id="mobile-title">Earthgazing<span id="mobile-subtitle">stargazing, but for Earth</span></div>
 <div id="mobile-strip">
   <div id="mobile-location-label"></div>
   <div id="mobile-cards"></div>
