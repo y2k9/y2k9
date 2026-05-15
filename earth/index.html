@@ -95,26 +95,29 @@
       color: #d8d8d8;
       letter-spacing: -0.015em;
     }
-    .card-sub {
-      font-size: 11px;
-      color: #444;
-      margin-top: 2px;
-    }
-    .object-card.selected .card-sub { color: #666; }
 
     .card-desc {
       font-size: 11px;
       color: #555;
       line-height: 1.55;
-      margin-top: 8px;
-      display: none;
+      margin-top: 5px;
     }
-    .object-card.selected .card-desc { display: block; }
+
+    .card-where {
+      margin-top: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .card-loc {
+      font-size: 11px;
+      color: #444;
+    }
+    .object-card.selected .card-loc { color: #666; }
 
     .card-coords {
       font-size: 10px;
       color: #383838;
-      margin-top: 7px;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.02em;
       display: none;
@@ -351,7 +354,6 @@
     <div id="add-form-title">New object</div>
     <div id="add-form-meta"></div>
     <input id="form-name" type="text" placeholder="Name  (e.g. The Eye)" autocomplete="off" />
-    <input id="form-subtitle" type="text" placeholder="Subtitle · Location" autocomplete="off" />
     <textarea id="form-desc" rows="3" placeholder="Description (optional)"></textarea>
     <div id="add-form-actions">
       <button id="form-cancel" onclick="closeAddForm()">Cancel</button>
@@ -487,15 +489,27 @@ function appendSection(label, objects) {
     const card = document.createElement("div");
     card.className = "object-card";
     card.id = `card-${obj.id}`;
+    const loc = getDisplayLocation(obj);
     card.innerHTML = `
       <div class="card-name">${obj.name}</div>
-      <div class="card-sub">${obj.subtitle}</div>
-      <div class="card-desc">${obj.description || ""}</div>
-      <div class="card-coords">${formatCoord(obj.lat, "NS")} &nbsp; ${formatCoord(obj.lng, "EW")}</div>
+      ${obj.description ? `<div class="card-desc">${obj.description}</div>` : ""}
+      <div class="card-where">
+        ${loc ? `<div class="card-loc">· ${loc}</div>` : ""}
+        <div class="card-coords">${formatCoord(obj.lat, "NS")} &nbsp; ${formatCoord(obj.lng, "EW")}</div>
+      </div>
     `;
     card.addEventListener("click", () => selectObject(obj.id));
     list.appendChild(card);
   });
+}
+
+function getDisplayLocation(obj) {
+  if (obj.source === "user") return obj.displayLocation || "";
+  if (obj.subtitle) {
+    const parts = obj.subtitle.split("·");
+    return parts[parts.length - 1].trim();
+  }
+  return "";
 }
 
 function formatCoord(val, axis) {
@@ -619,12 +633,11 @@ map.on("click", async (e) => {
   document.getElementById("add-form-meta").textContent =
     `${formatCoord(lat, "NS")}  ${formatCoord(lng, "EW")}  ·  zoom ${zoom}`;
   document.getElementById("form-name").value = "";
-  document.getElementById("form-subtitle").value = "";
   document.getElementById("form-desc").value = "";
   document.getElementById("add-modal").classList.remove("hidden");
   setTimeout(() => document.getElementById("form-name").focus(), 50);
 
-  // Reverse geocode in background — fill subtitle when ready
+  // Reverse geocode in background — store location for saving
   try {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10`,
@@ -634,9 +647,7 @@ map.on("click", async (e) => {
     const addr = data.address || {};
     const place = addr.city || addr.town || addr.village || addr.county || addr.state || "";
     const country = addr.country || "";
-    const suggestion = [place, country].filter(Boolean).join(", ");
-    const subInput = document.getElementById("form-subtitle");
-    if (suggestion && !subInput.value) subInput.value = suggestion;
+    pendingAdd.displayLocation = [place, country].filter(Boolean).join(", ");
   } catch (_) {}
 });
 
@@ -647,7 +658,7 @@ function saveObject() {
   const newObj = {
     id: "user_" + Date.now(),
     name,
-    subtitle: document.getElementById("form-subtitle").value.trim() || "User addition",
+    displayLocation: pendingAdd.displayLocation || "",
     description: document.getElementById("form-desc").value.trim(),
     lat: pendingAdd.lat,
     lng: pendingAdd.lng,
