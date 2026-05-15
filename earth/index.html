@@ -18,22 +18,28 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
 
-    body { display: flex; }
-
     /* ── Sidebar ─────────────────────────────────────────── */
     #sidebar {
-      width: 272px;
-      flex-shrink: 0;
+      position: fixed;
+      left: 16px;
+      top: 16px;
+      bottom: 16px;
+      width: 260px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border-right: 1px solid #1c1c1c;
+      background: rgba(8, 8, 8, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
       z-index: 10;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55);
     }
 
     #sidebar-header {
       padding: 18px 20px 14px;
-      border-bottom: 1px solid #1c1c1c;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       flex-shrink: 0;
     }
 
@@ -77,9 +83,9 @@
       border-left: 2px solid transparent;
       transition: background 0.12s, border-color 0.12s;
     }
-    .object-card:hover { background: #0f0f0f; }
+    .object-card:hover { background: rgba(255,255,255,0.03); }
     .object-card.selected {
-      background: #0f0f0f;
+      background: rgba(255,255,255,0.04);
       border-left-color: #e8e8e8;
     }
 
@@ -118,7 +124,7 @@
     /* ── Footer ──────────────────────────────────────────── */
     #sidebar-footer {
       padding: 11px 20px;
-      border-top: 1px solid #1c1c1c;
+      border-top: 1px solid rgba(255,255,255,0.05);
       font-size: 10px;
       color: #2e2e2e;
       letter-spacing: 0.04em;
@@ -126,7 +132,7 @@
     }
 
     /* ── Map ─────────────────────────────────────────────── */
-    #map { flex: 1; height: 100%; touch-action: none; }
+    #map { position: fixed; inset: 0; touch-action: none; }
 
     .maplibregl-ctrl-bottom-right { display: none; }
     .maplibregl-ctrl-bottom-left  { display: none; }
@@ -134,13 +140,21 @@
 
     .maplibregl-canvas { outline: none; touch-action: none; }
 
-    /* ── Info bar ────────────────────────────────────────── */
-    #info-bar {
-      position: absolute;
+    /* ── Bottom bar (wrapper) ────────────────────────────── */
+    #bottom-bar {
+      position: fixed;
       bottom: 20px;
-      left: calc(272px + (100vw - 272px) / 2);
+      left: calc(292px + (100vw - 292px) / 2);
       transform: translateX(-50%);
       z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    /* ── Info bar ────────────────────────────────────────── */
+    #info-bar {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -175,30 +189,31 @@
 
     /* ── Sidebar header row ──────────────────────────────── */
     #sidebar-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       margin-top: 10px;
     }
 
-    #add-mode-btn {
-      width: 22px;
-      height: 22px;
-      background: transparent;
-      border: 1px solid #2a2a2a;
-      border-radius: 4px;
+    /* ── Add button in info bar ──────────────────────────── */
+    #add-bar-btn {
+      width: 30px;
+      height: 30px;
+      background: rgba(10, 10, 10, 0.72);
+      border: 1px solid #222;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 6px;
       color: #555;
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      pointer-events: auto;
       transition: color 0.15s, border-color 0.15s, background 0.15s;
     }
-    #add-mode-btn:hover { color: #bbb; border-color: #555; }
-    #add-mode-btn.active { background: #e8e8e8; color: #0a0a0a; border-color: #e8e8e8; }
+    #add-bar-btn:hover { color: #bbb; border-color: #666; }
+    #add-bar-btn.active { background: #e8e8e8; color: #0a0a0a; border-color: #e8e8e8; }
 
     /* ── Section headers ─────────────────────────────────── */
     .section-header {
@@ -211,9 +226,9 @@
 
     /* ── Add mode hint ───────────────────────────────────── */
     #add-hint {
-      position: absolute;
-      top: 16px;
-      left: calc(272px + (100vw - 272px) / 2);
+      position: fixed;
+      top: 24px;
+      left: calc(292px + (100vw - 292px) / 2);
       transform: translateX(-50%);
       background: rgba(10,10,10,0.8);
       border: 1px solid #2a2a2a;
@@ -228,9 +243,9 @@
 
     /* ── Add form modal ──────────────────────────────────── */
     #add-modal {
-      position: absolute;
+      position: fixed;
       top: 0; bottom: 0;
-      left: 272px; right: 0;
+      left: 292px; right: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -276,6 +291,22 @@
     }
     #add-form input::placeholder { color: #3a3a3a; }
     #add-form input:focus { border-color: #444; }
+    #add-form textarea {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 4px;
+      color: #e8e8e8;
+      font-size: 12px;
+      padding: 8px 10px;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+      resize: none;
+      line-height: 1.5;
+      transition: border-color 0.15s;
+    }
+    #add-form textarea::placeholder { color: #3a3a3a; }
+    #add-form textarea:focus { border-color: #444; }
     #add-form-actions {
       display: flex;
       gap: 8px;
@@ -304,7 +335,6 @@
     <a id="back-link" href="../">← y2k9</a>
     <div id="sidebar-title-row">
       <h1>Earth Shapes</h1>
-      <button id="add-mode-btn" title="Add mode" onclick="toggleAddMode()">+</button>
     </div>
     <p>Places on Earth that look like something else.</p>
   </div>
@@ -322,6 +352,7 @@
     <div id="add-form-meta"></div>
     <input id="form-name" type="text" placeholder="Name  (e.g. The Eye)" autocomplete="off" />
     <input id="form-subtitle" type="text" placeholder="Subtitle · Location" autocomplete="off" />
+    <textarea id="form-desc" rows="3" placeholder="Description (optional)"></textarea>
     <div id="add-form-actions">
       <button id="form-cancel" onclick="closeAddForm()">Cancel</button>
       <button id="form-save" onclick="saveObject()">Save</button>
@@ -329,15 +360,18 @@
   </div>
 </div>
 
-<div id="info-bar">
-  <div id="compass-btn" title="Reset north" onclick="map.resetNorth({ duration: 500 })">
-    <svg id="compass-needle" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="11,2 13,11 11,9.5 9,11" fill="#e8e8e8"/>
-      <polygon points="11,20 13,11 11,12.5 9,11" fill="#444"/>
-      <circle cx="11" cy="11" r="1.2" fill="#666"/>
-    </svg>
+<div id="bottom-bar">
+  <div id="info-bar">
+    <div id="compass-btn" title="Reset north" onclick="map.resetNorth({ duration: 500 })">
+      <svg id="compass-needle" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="11,2 13,11 11,9.5 9,11" fill="#e8e8e8"/>
+        <polygon points="11,20 13,11 11,12.5 9,11" fill="#444"/>
+        <circle cx="11" cy="11" r="1.2" fill="#666"/>
+      </svg>
+    </div>
+    <span id="coords">— °,  — °</span>
   </div>
-  <span id="coords">— °,  — °</span>
+  <button id="add-bar-btn" title="Add mode" onclick="toggleAddMode()">+</button>
 </div>
 
 <script>
@@ -570,7 +604,7 @@ let pendingAdd = null;
 
 function toggleAddMode() {
   addMode = !addMode;
-  document.getElementById("add-mode-btn").classList.toggle("active", addMode);
+  document.getElementById("add-bar-btn").classList.toggle("active", addMode);
   map.getCanvas().style.cursor = addMode ? "crosshair" : "";
   document.getElementById("add-hint").style.display = addMode ? "block" : "none";
 }
@@ -586,6 +620,7 @@ map.on("click", async (e) => {
     `${formatCoord(lat, "NS")}  ${formatCoord(lng, "EW")}  ·  zoom ${zoom}`;
   document.getElementById("form-name").value = "";
   document.getElementById("form-subtitle").value = "";
+  document.getElementById("form-desc").value = "";
   document.getElementById("add-modal").classList.remove("hidden");
   setTimeout(() => document.getElementById("form-name").focus(), 50);
 
@@ -613,7 +648,7 @@ function saveObject() {
     id: "user_" + Date.now(),
     name,
     subtitle: document.getElementById("form-subtitle").value.trim() || "User addition",
-    description: "",
+    description: document.getElementById("form-desc").value.trim(),
     lat: pendingAdd.lat,
     lng: pendingAdd.lng,
     zoom: pendingAdd.zoom,
