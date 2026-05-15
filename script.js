@@ -1,18 +1,24 @@
-// Show the enter button after 1s
 window.addEventListener('DOMContentLoaded', () => {
+  // Show "press enter" hint after 1s
   setTimeout(() => {
-    document.getElementById('enter-btn').classList.add('visible');
+    document.getElementById('enter-hint').classList.add('visible');
   }, 1000);
+
+  // Keyboard: Enter key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') enter();
+  });
+
+  // Click on the hint (mobile / mouse)
+  document.getElementById('enter-hint').addEventListener('click', enter);
 });
 
 function enter() {
   const intro = document.getElementById('intro');
   const main  = document.getElementById('main');
 
-  // Fade intro out
   intro.classList.add('hiding');
 
-  // Fade main in after intro finishes
   setTimeout(() => {
     intro.style.display = 'none';
     main.style.display  = 'block';
@@ -21,5 +27,5 @@ function enter() {
         main.classList.add('visible');
       });
     });
-  }, 400);
+  }, 300);
 }

@@ -9,9 +9,10 @@ html, body {
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #e8e8e8;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background-color: #1a1a1a;
+  color: #d4d4d4;
+  font-family: "SF Mono", "Menlo", "Monaco", "Consolas", "Courier New", monospace;
+  font-size: 14px;
 }
 
 /* ── Intro ── */
@@ -21,45 +22,52 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
-#intro p {
-  font-size: clamp(1.25rem, 4vw, 2rem);
+.name {
+  font-size: clamp(1rem, 3vw, 1.25rem);
   font-weight: 400;
+  color: #e8e8e8;
   letter-spacing: -0.01em;
 }
 
-#enter-btn {
+#enter-hint {
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-
-  background: #fff;
-  color: #0a0a0a;
-  border: none;
-  border-radius: 999px;
-  padding: 0.6rem 1.6rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  transform: translateY(4px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  color: #555;
+  font-size: 0.8rem;
   cursor: pointer;
+  user-select: none;
 }
 
-#enter-btn.visible {
+#enter-hint.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-#enter-btn:hover {
-  background: #e0e0e0;
+#enter-hint:hover {
+  color: #888;
+}
+
+kbd {
+  display: inline-block;
+  background: #252525;
+  border: 1px solid #3a3a3a;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.1em 0.45em;
+  font-family: inherit;
+  font-size: 0.78rem;
+  color: #aaa;
+  line-height: 1.5;
 }
 
 /* ── Transition out ── */
 #intro.hiding {
   opacity: 0;
-  transform: translateY(-12px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
@@ -67,12 +75,11 @@ body {
 #main {
   display: none;
   opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
   min-height: 100vh;
-  padding: 6rem 2rem;
-  max-width: 640px;
+  padding: 5rem 2rem;
+  max-width: 580px;
   margin: 0 auto;
 }
 
@@ -81,58 +88,53 @@ body {
   transform: translateY(0);
 }
 
-.heading {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: #888;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.01em;
+.label {
+  font-size: 0.75rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
 }
 
 /* ── Cards ── */
 .grid {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1px;
+  border: 1px solid #2e2e2e;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #2e2e2e;
 }
 
 .card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.1rem 1.4rem;
-  border: 1px solid #222;
-  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  background: #212121;
   text-decoration: none;
-  color: #e8e8e8;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  color: #d4d4d4;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .card:hover {
-  border-color: #444;
-  background: #111;
-}
-
-.card.placeholder {
-  color: #555;
-}
-
-.card.placeholder:hover {
-  color: #777;
+  background: #272727;
+  color: #f0f0f0;
 }
 
 .card-title {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
 }
 
 .card-arrow {
-  font-size: 0.9rem;
-  color: #555;
-  transition: transform 0.2s ease;
+  font-size: 0.8rem;
+  color: #444;
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .card:hover .card-arrow {
-  transform: translateX(3px);
+  color: #888;
+  transform: translate(2px, -2px);
 }
