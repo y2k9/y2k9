@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Earth Shapes — y2k9</title>
+  <title>Earthgazing — y2k9</title>
   <link rel="icon" type="image/jpeg" href="../favicon.jpg" />
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
@@ -15,7 +15,6 @@
       height: 100%;
       overflow: hidden;
       background: #0a0a0a;
-      color: #e8e8e8;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
 
@@ -25,83 +24,81 @@
       left: 16px;
       top: 16px;
       bottom: 16px;
-      width: 260px;
+      width: 272px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: rgba(8, 8, 8, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #ede9e4;
+      border-radius: 14px;
       z-index: 10;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.55);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.22);
     }
 
     #sidebar-header {
-      padding: 18px 20px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid #f0ece7;
       flex-shrink: 0;
     }
 
     #back-link {
       display: inline-block;
       font-size: 10px;
-      color: #444;
+      color: #c8c2bb;
       text-decoration: none;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       transition: color 0.15s;
     }
-    #back-link:hover { color: #888; }
+    #back-link:hover { color: #e8724a; }
 
     #sidebar-header h1 {
-      font-size: 14px;
-      font-weight: 500;
-      color: #e8e8e8;
-      letter-spacing: -0.02em;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+      letter-spacing: -0.03em;
     }
 
     #sidebar-header p {
-      font-size: 11px;
-      color: #444;
-      margin-top: 4px;
-      line-height: 1.55;
+      font-size: 11.5px;
+      color: #aaa;
+      margin-top: 5px;
+      line-height: 1.6;
     }
 
     /* ── Object list ─────────────────────────────────────── */
     #objects-list {
       flex: 1;
       overflow-y: auto;
-      padding: 6px 0;
+      padding: 8px 0;
     }
     #objects-list::-webkit-scrollbar { width: 0; }
 
     .object-card {
-      padding: 13px 20px 13px 18px;
+      padding: 14px 20px 14px 18px;
       cursor: pointer;
-      border-left: 2px solid transparent;
+      border-left: 3px solid transparent;
       transition: background 0.12s, border-color 0.12s;
     }
-    .object-card:hover { background: rgba(255,255,255,0.03); }
+    .object-card:hover { background: #faf8f6; }
     .object-card.selected {
-      background: rgba(255,255,255,0.04);
-      border-left-color: #e8e8e8;
+      background: #fff8f5;
+      border-left-color: #e8724a;
     }
 
     .card-name {
       font-size: 13px;
       font-weight: 500;
-      color: #d8d8d8;
-      letter-spacing: -0.015em;
+      color: #1a1a1a;
+      letter-spacing: -0.01em;
     }
 
     .card-desc {
-      font-size: 11px;
-      color: #555;
+      font-size: 11.5px;
+      color: #999;
       line-height: 1.55;
-      margin-top: 5px;
+      margin-top: 4px;
     }
 
     .card-where {
@@ -112,26 +109,27 @@
     }
     .card-loc {
       font-size: 11px;
-      color: #444;
+      color: #c8c2bb;
     }
-    .object-card.selected .card-loc { color: #666; }
+    .object-card.selected .card-loc { color: #e8724a; }
 
     .card-edit {
       font-size: 9px;
-      color: #2e2e2e;
+      color: #d0cbc5;
       cursor: pointer;
       margin-left: 8px;
       display: none;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       vertical-align: middle;
+      transition: color 0.15s;
     }
     .object-card.selected .card-edit { display: inline; }
-    .card-edit:hover { color: #888; }
+    .card-edit:hover { color: #e8724a; }
 
     .card-coords {
       font-size: 10px;
-      color: #383838;
+      color: #d0cbc5;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.02em;
       display: none;
@@ -141,10 +139,10 @@
     /* ── Footer ──────────────────────────────────────────── */
     #sidebar-footer {
       padding: 11px 20px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid #f0ece7;
       font-size: 10px;
-      color: #2e2e2e;
-      letter-spacing: 0.04em;
+      color: #c8c2bb;
+      letter-spacing: 0.03em;
       flex-shrink: 0;
     }
 
@@ -161,7 +159,7 @@
     #bottom-bar {
       position: fixed;
       bottom: 20px;
-      left: calc(292px + (100vw - 292px) / 2);
+      left: calc(304px + (100vw - 304px) / 2);
       transform: translateX(-50%);
       z-index: 20;
       display: flex;
@@ -175,13 +173,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(10, 10, 10, 0.72);
-      border: 1px solid #222;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 6px;
-      padding: 6px 12px 6px 8px;
+      background: #ffffff;
+      border: 1px solid #ede9e4;
+      border-radius: 8px;
+      padding: 7px 14px 7px 10px;
       pointer-events: none;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.14);
     }
 
     #compass-btn {
@@ -190,7 +187,7 @@
       flex-shrink: 0;
       cursor: pointer;
       pointer-events: auto;
-      opacity: 0.7;
+      opacity: 0.55;
       transition: opacity 0.15s;
     }
     #compass-btn:hover { opacity: 1; }
@@ -204,38 +201,35 @@
 
     #location-name {
       font-size: 11px;
-      color: #888;
-      letter-spacing: 0.02em;
+      color: #555;
+      letter-spacing: 0.01em;
       white-space: nowrap;
       min-height: 1.2em;
       transition: opacity 0.2s ease;
+      font-weight: 500;
     }
-    #location-name.fading { opacity: 0.35; }
+    #location-name.fading { opacity: 0.3; }
 
     #coords {
-      font-size: 11px;
-      color: #555;
+      font-size: 10.5px;
+      color: #bbb;
       letter-spacing: 0.04em;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
 
     /* ── Sidebar header row ──────────────────────────────── */
-    #sidebar-title-row {
-      margin-top: 10px;
-    }
+    #sidebar-title-row { margin-top: 10px; }
 
-    /* ── Add button in info bar ──────────────────────────── */
+    /* ── Add button ─────────────────────────────────────── */
     #add-bar-btn {
-      width: 30px;
-      height: 30px;
-      background: rgba(10, 10, 10, 0.72);
-      border: 1px solid #222;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 6px;
-      color: #555;
-      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      background: #ffffff;
+      border: 1px solid #ede9e4;
+      border-radius: 8px;
+      color: #c8c2bb;
+      font-size: 18px;
       line-height: 1;
       cursor: pointer;
       display: flex;
@@ -243,10 +237,11 @@
       justify-content: center;
       flex-shrink: 0;
       pointer-events: auto;
-      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.14);
+      transition: color 0.15s, border-color 0.15s;
     }
-    #add-bar-btn:hover { color: #bbb; border-color: #666; }
-    #add-bar-btn.active { background: #e8e8e8; color: #0a0a0a; border-color: #e8e8e8; }
+    #add-bar-btn:hover { color: #e8724a; border-color: #e8724a; }
+    #add-bar-btn.active { background: #e8724a; color: #fff; border-color: #e8724a; }
 
     /* ── Section headers ─────────────────────────────────── */
     .section-header {
@@ -254,104 +249,93 @@
       font-size: 9px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #2e2e2e;
+      color: #d0cbc5;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .section-export {
       font-size: 9px;
-      color: #2e2e2e;
+      color: #d0cbc5;
       cursor: pointer;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       transition: color 0.15s;
     }
-    .section-export:hover { color: #888; }
+    .section-export:hover { color: #e8724a; }
 
     /* ── Add mode hint ───────────────────────────────────── */
     #add-hint {
       position: fixed;
       top: 24px;
-      left: calc(292px + (100vw - 292px) / 2);
+      left: calc(304px + (100vw - 304px) / 2);
       transform: translateX(-50%);
-      background: rgba(10,10,10,0.8);
-      border: 1px solid #2a2a2a;
-      border-radius: 5px;
-      padding: 5px 12px;
+      background: #ffffff;
+      border: 1px solid #ede9e4;
+      border-radius: 6px;
+      padding: 6px 14px;
       font-size: 11px;
       color: #888;
       pointer-events: none;
       z-index: 20;
       display: none;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
     }
 
     /* ── Add form modal ──────────────────────────────────── */
     #add-modal {
       position: fixed;
       top: 0; bottom: 0;
-      left: 292px; right: 0;
+      left: 304px; right: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 30;
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(3px);
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(2px);
     }
     #add-modal.hidden { display: none; }
 
     #add-form {
-      background: #0f0f0f;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 20px;
-      width: 290px;
+      background: #ffffff;
+      border: 1px solid #ede9e4;
+      border-radius: 12px;
+      padding: 22px;
+      width: 300px;
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 10px;
+      box-shadow: 0 8px 36px rgba(0,0,0,0.16);
     }
     #add-form-title {
-      font-size: 12px;
-      font-weight: 500;
-      color: #e8e8e8;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
       margin-bottom: 2px;
     }
     #add-form-meta {
       font-size: 10px;
-      color: #444;
+      color: #bbb;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.03em;
     }
-    #add-form input {
-      background: #0a0a0a;
-      border: 1px solid #222;
-      border-radius: 4px;
-      color: #e8e8e8;
-      font-size: 12px;
-      padding: 8px 10px;
+    #add-form input, #add-form textarea {
+      background: #faf8f6;
+      border: 1px solid #ede9e4;
+      border-radius: 6px;
+      color: #1a1a1a;
+      font-size: 12.5px;
+      padding: 9px 11px;
       outline: none;
       width: 100%;
       font-family: inherit;
       transition: border-color 0.15s;
     }
-    #add-form input::placeholder { color: #3a3a3a; }
-    #add-form input:focus { border-color: #444; }
-    #add-form textarea {
-      background: #0a0a0a;
-      border: 1px solid #222;
-      border-radius: 4px;
-      color: #e8e8e8;
-      font-size: 12px;
-      padding: 8px 10px;
-      outline: none;
-      width: 100%;
-      font-family: inherit;
-      resize: none;
-      line-height: 1.5;
-      transition: border-color 0.15s;
-    }
-    #add-form textarea::placeholder { color: #3a3a3a; }
-    #add-form textarea:focus { border-color: #444; }
+    #add-form input::placeholder,
+    #add-form textarea::placeholder { color: #ccc; }
+    #add-form input:focus,
+    #add-form textarea:focus { border-color: #e8724a; }
+    #add-form textarea { resize: none; line-height: 1.5; }
     #add-form-actions {
       display: flex;
       gap: 8px;
@@ -359,18 +343,18 @@
     }
     #add-form-actions button {
       flex: 1;
-      padding: 7px;
-      border-radius: 4px;
-      font-size: 11px;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 12px;
       font-family: inherit;
       cursor: pointer;
-      border: 1px solid #2a2a2a;
+      border: 1px solid #ede9e4;
       transition: all 0.15s;
     }
-    #form-cancel { background: transparent; color: #555; }
-    #form-cancel:hover { color: #999; border-color: #444; }
-    #form-save { background: #e8e8e8; color: #0a0a0a; border-color: #e8e8e8; }
-    #form-save:hover { background: #fff; }
+    #form-cancel { background: transparent; color: #aaa; }
+    #form-cancel:hover { color: #555; border-color: #ccc; }
+    #form-save { background: #e8724a; color: #fff; border-color: #e8724a; font-weight: 500; }
+    #form-save:hover { background: #d4603a; border-color: #d4603a; }
   </style>
 </head>
 <body>
@@ -379,9 +363,9 @@
   <div id="sidebar-header">
     <a id="back-link" href="../">← y2k9</a>
     <div id="sidebar-title-row">
-      <h1>Earth Shapes</h1>
+      <h1>Earthgazing</h1>
     </div>
-    <p>Places on Earth that look like something else.</p>
+    <p>Come find random shaped objects on Earth :) add them to the library</p>
   </div>
   <div id="objects-list"></div>
   <div id="sidebar-footer">68 objects &nbsp;·&nbsp; imagery © Esri</div>
@@ -408,9 +392,9 @@
   <div id="info-bar">
     <div id="compass-btn" title="Reset north" onclick="map.resetNorth({ duration: 500 })">
       <svg id="compass-needle" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="11,2 13,11 11,9.5 9,11" fill="#e8e8e8"/>
-        <polygon points="11,20 13,11 11,12.5 9,11" fill="#444"/>
-        <circle cx="11" cy="11" r="1.2" fill="#666"/>
+        <polygon points="11,2 13,11 11,9.5 9,11" fill="#333"/>
+        <polygon points="11,20 13,11 11,12.5 9,11" fill="#ddd"/>
+        <circle cx="11" cy="11" r="1.2" fill="#bbb"/>
       </svg>
     </div>
     <div id="coords-group">
