@@ -495,8 +495,8 @@ const OBJECTS = [
   { id: "alberta_tar_patterns", name: "Oil Abstract", subtitle: "Tailings pond formations · Canada", description: "Industrial extraction ponds create surreal abstract color compositions.", lat: 57.102, lng: -111.642, zoom: 10.0 },
 ];
 
-// ── Tag all initial objects as ChatGPT-sourced ───────────
-OBJECTS.forEach(o => o.source = "chatgpt");
+// ── ChatGPT objects archived — hidden from UI, preserved for later ──
+// (re-enable by uncommenting the forEach and adding appendSection call in renderSidebar)
 
 // ── Supabase ──────────────────────────────────────────────
 const db = supabase.createClient(
@@ -552,22 +552,11 @@ async function persistObject(obj) {
   }
 }
 
-function allObjects() { return [...userObjects, ...OBJECTS]; }
+function allObjects() { return [...userObjects]; }
 
 // ── Sidebar rendering ─────────────────────────────────────
 const list   = document.getElementById("objects-list");
 const footer = document.getElementById("sidebar-footer");
-
-function renderSidebar() {
-  list.innerHTML = "";
-  if (userObjects.length > 0) appendSection("My Additions", userObjects);
-  appendSection("ChatGPT Suggestions", OBJECTS);
-  footer.innerHTML = `${allObjects().length} objects &nbsp;·&nbsp; imagery © Esri`;
-  if (selectedId) {
-    const card = document.getElementById(`card-${selectedId}`);
-    if (card) card.classList.add("selected");
-  }
-}
 
 function exportUserObjects() {
   const blob = new Blob([JSON.stringify(userObjects, null, 2)], { type: "application/json" });
@@ -579,13 +568,9 @@ function exportUserObjects() {
   URL.revokeObjectURL(url);
 }
 
-function appendSection(label, objects) {
-  const hdr = document.createElement("div");
-  hdr.className = "section-header";
-  const isUserSection = label === "My Additions";
-  hdr.innerHTML = `<span>${label} (${objects.length})</span>${isUserSection ? '<span class="section-export" onclick="exportUserObjects()">↓ save</span>' : ""}`;
-  list.appendChild(hdr);
-  objects.forEach(obj => {
+function renderSidebar() {
+  list.innerHTML = "";
+  userObjects.forEach(obj => {
     const card = document.createElement("div");
     card.className = "object-card";
     card.id = `card-${obj.id}`;
@@ -604,6 +589,11 @@ function appendSection(label, objects) {
     card.addEventListener("click", () => selectObject(obj.id));
     list.appendChild(card);
   });
+  footer.innerHTML = `${userObjects.length} objects &nbsp;·&nbsp; imagery © Esri &nbsp;·&nbsp; <span style="cursor:pointer;color:#3a3a3a" onmouseenter="this.style.color='#888'" onmouseleave="this.style.color='#3a3a3a'" onclick="exportUserObjects()">↓ export</span>`;
+  if (selectedId) {
+    const card = document.getElementById(`card-${selectedId}`);
+    if (card) card.classList.add("selected");
+  }
 }
 
 function getDisplayLocation(obj) {
