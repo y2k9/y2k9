@@ -126,13 +126,13 @@
     }
 
     /* ── Map ─────────────────────────────────────────────── */
-    #map { flex: 1; height: 100%; }
+    #map { flex: 1; height: 100%; touch-action: none; }
 
     .maplibregl-ctrl-bottom-right { display: none; }
     .maplibregl-ctrl-bottom-left  { display: none; }
     .maplibregl-ctrl-top-right    { display: none; }
 
-    .maplibregl-canvas { outline: none; }
+    .maplibregl-canvas { outline: none; touch-action: none; }
   </style>
 </head>
 <body>
@@ -144,58 +144,83 @@
     <p>Places on Earth that look like something else.</p>
   </div>
   <div id="objects-list"></div>
-  <div id="sidebar-footer">5 objects &nbsp;·&nbsp; imagery © Esri</div>
+  <div id="sidebar-footer">68 objects &nbsp;·&nbsp; imagery © Esri</div>
 </div>
 
 <div id="map"></div>
 
 <script>
 const OBJECTS = [
-  {
-    id: "richat",
-    name: "The Eye",
-    subtitle: "Richat Structure · Mauritania",
-    description: "A 50 km geological dome eroded to concentric rings of ancient rock. Appears to stare back from space.",
-    lat: 21.124,
-    lng: -11.399,
-    zoom: 9.2,
-  },
-  {
-    id: "kansas",
-    name: "The Grid",
-    subtitle: "Center-Pivot Irrigation · Kansas, USA",
-    description: "Thousands of perfect circles drawn by rotating irrigation booms across the flat Great Plains.",
-    lat: 37.685,
-    lng: -100.55,
-    zoom: 11.8,
-  },
-  {
-    id: "amazon",
-    name: "The Loop",
-    subtitle: "Ucayali River Meanders · Peru",
-    description: "The Amazon's tributaries coil into impossible loops, leaving crescent ghost lakes called oxbows.",
-    lat: -8.17,
-    lng: -74.51,
-    zoom: 11.2,
-  },
-  {
-    id: "namib",
-    name: "The Dunes",
-    subtitle: "Namib Desert · Namibia",
-    description: "Ancient star dunes casting long shadows across the world's oldest desert. Formed over 55 million years.",
-    lat: -24.73,
-    lng: 15.44,
-    zoom: 11.5,
-  },
-  {
-    id: "ganges",
-    name: "The Fan",
-    subtitle: "Ganges–Brahmaputra Delta · Bangladesh",
-    description: "The world's largest river delta — a fractal web of channels fanning into the Bay of Bengal.",
-    lat: 22.08,
-    lng: 89.62,
-    zoom: 8.2,
-  },
+  { id: "guitar_lake", name: "The Guitar", subtitle: "Guitar-shaped forest plantation · Argentina", description: "A massive tree plantation carefully arranged in the shape of a guitar.", lat: -33.867, lng: -63.987, zoom: 11.0 },
+  { id: "elephant_rock", name: "Stone Elephant", subtitle: "Elephant-shaped rock formation · Iceland", description: "A coastal basalt cliff that resembles a giant elephant dipping its trunk into the sea.", lat: 63.442, lng: -20.288, zoom: 13.0 },
+  { id: "rabbit_island", name: "The Rabbit", subtitle: "Rabbit-shaped island · Japan", description: "An island outline resembling a crouching rabbit viewed from above.", lat: 34.283, lng: 132.998, zoom: 12.0 },
+  { id: "duck_lake", name: "Rubber Duck Lake", subtitle: "Duck-shaped lake · Canada", description: "A small lake whose outline looks remarkably like a rubber duck.", lat: 54.771, lng: -113.882, zoom: 13.0 },
+  { id: "fish_farms", name: "Fish Scales", subtitle: "Aquaculture ponds · China", description: "Dense fish farming ponds create overlapping patterns resembling fish scales.", lat: 22.760, lng: 113.406, zoom: 11.0 },
+  { id: "cat_island", name: "Sleeping Cat", subtitle: "Cat-shaped island · Sudan", description: "The island outline resembles a curled-up sleeping cat.", lat: 18.240, lng: 33.921, zoom: 12.0 },
+  { id: "shoe_lake", name: "The Shoe", subtitle: "Shoe-shaped lake · Kazakhstan", description: "A lake whose curved shoreline resembles a sneaker viewed from above.", lat: 49.282, lng: 76.320, zoom: 11.0 },
+  { id: "whale_bay", name: "Blue Whale Bay", subtitle: "Whale-shaped bay · New Zealand", description: "The coastline forms the silhouette of a giant whale surfacing.", lat: -44.812, lng: 168.132, zoom: 10.0 },
+  { id: "finger_lakes", name: "Fingerprints", subtitle: "Glacial lakes · USA", description: "Long parallel lakes resemble giant fingerprint ridges across the landscape.", lat: 42.662, lng: -76.812, zoom: 9.0 },
+  { id: "owl_fields", name: "The Owl", subtitle: "Agricultural pattern · Saudi Arabia", description: "Circular irrigation fields align into a pattern resembling an owl face.", lat: 28.732, lng: 40.213, zoom: 10.0 },
+  { id: "dragon_lake", name: "Dragon Lake", subtitle: "Dragon-shaped reservoir · China", description: "A winding reservoir outline resembles a flying dragon.", lat: 29.432, lng: 106.921, zoom: 10.0 },
+  { id: "skull_desert", name: "Desert Skull", subtitle: "Eroded mountain formation · Chad", description: "Shadows and erosion patterns create the appearance of a giant skull.", lat: 20.912, lng: 17.228, zoom: 11.0 },
+  { id: "leaf_island", name: "Floating Leaf", subtitle: "Leaf-shaped island · Finland", description: "A narrow island with branching edges resembling a maple leaf.", lat: 61.772, lng: 28.331, zoom: 12.0 },
+  { id: "octopus_fields", name: "The Octopus", subtitle: "Road network pattern · Spain", description: "Roads extending from a central hub resemble octopus tentacles.", lat: 37.214, lng: -4.832, zoom: 11.0 },
+  { id: "coffee_stain_delta", name: "Coffee Spill", subtitle: "Sediment delta · Brazil", description: "Dark sediment blooms resemble spilled coffee spreading across a table.", lat: -1.910, lng: -49.271, zoom: 8.0 },
+  { id: "butterfly_farms", name: "Butterfly Wings", subtitle: "Symmetrical farmland · Ukraine", description: "Mirrored agricultural plots resemble butterfly wings from above.", lat: 48.392, lng: 31.822, zoom: 10.0 },
+  { id: "tree_rivers", name: "Winter Trees", subtitle: "Frozen river network · Siberia", description: "Branching frozen rivers resemble leafless winter trees.", lat: 66.882, lng: 135.004, zoom: 7.0 },
+  { id: "snake_road", name: "The Serpent Road", subtitle: "Mountain switchbacks · Chile", description: "A winding mountain road resembles a snake crawling across rock faces.", lat: -32.842, lng: -70.128, zoom: 12.0 },
+  { id: "starfish_reef", name: "Starfish Reef", subtitle: "Radial coral formation · Maldives", description: "Coral structures spread outward like the arms of a starfish.", lat: 3.715, lng: 72.921, zoom: 12.0 },
+  { id: "brain_coral", name: "Ocean Brain", subtitle: "Coral reef textures · Belize", description: "Complex reef ridges resemble the folds of a human brain.", lat: 17.221, lng: -87.561, zoom: 13.0 },
+  { id: "richat_eye", name: "The Eye of the Sahara", subtitle: "Concentric desert formation · Mauritania", description: "A giant circular geological dome resembling a human eye, visible from space across the Sahara Desert.", lat: 21.124, lng: -11.401, zoom: 8.0 },
+  { id: "dragon_blood_trees", name: "Alien Umbrellas", subtitle: "Dragon blood tree forest · Socotra, Yemen", description: "The iconic trees create mushroom-like canopies that look almost extraterrestrial from above.", lat: 12.463, lng: 53.823, zoom: 11.0 },
+  { id: "nazca_hummingbird", name: "The Hummingbird", subtitle: "Ancient geoglyph · Peru", description: "A massive Nazca Line geoglyph shaped like a hummingbird etched into desert plains.", lat: -14.692, lng: -75.130, zoom: 12.0 },
+  { id: "heart_reef", name: "Heart Reef", subtitle: "Heart-shaped coral reef · Australia", description: "A naturally formed coral reef shaped uncannily like a perfect heart.", lat: -20.243, lng: 148.967, zoom: 12.0 },
+  { id: "badlands_face", name: "Badlands Guardian", subtitle: "Rock formation resembling a face · Canada", description: "Erosion patterns form what appears to be a giant human profile wearing headphones.", lat: 50.010, lng: -110.113, zoom: 11.0 },
+  { id: "manicouagan_ring", name: "The Ring Lake", subtitle: "Meteor crater reservoir · Canada", description: "A nearly perfect ring-shaped lake formed by an ancient meteor impact.", lat: 51.389, lng: -68.699, zoom: 8.0 },
+  { id: "palm_jumeirah", name: "The Palm", subtitle: "Artificial island complex · UAE", description: "A giant engineered island shaped like a palm tree extending into the Persian Gulf.", lat: 25.112, lng: 55.139, zoom: 11.0 },
+  { id: "desert_breath", name: "Desert Spiral", subtitle: "Land art installation · Egypt", description: "A huge spiral carved into desert sands near the Red Sea.", lat: 27.380, lng: 33.632, zoom: 12.0 },
+  { id: "crop_circle_kansas", name: "The Green Mandala", subtitle: "Circular irrigation farms · USA", description: "Perfectly circular farms create mesmerizing geometric grids across the plains.", lat: 38.472, lng: -101.755, zoom: 10.0 },
+  { id: "ganges_delta", name: "Fractal Delta", subtitle: "River delta network · Bangladesh", description: "Braided waterways create organic branching patterns like veins or roots.", lat: 22.012, lng: 90.741, zoom: 7.0 },
+  { id: "great_blue_hole", name: "Blue Abyss", subtitle: "Marine sinkhole · Belize", description: "A giant dark-blue circular hole surrounded by turquoise reef waters.", lat: 17.315, lng: -87.534, zoom: 12.0 },
+  { id: "salinas_grid", name: "Salt Mosaic", subtitle: "Salt evaporation ponds · Bolivia", description: "Polygonal salt ponds form surreal reflective geometric patterns.", lat: -20.133, lng: -67.489, zoom: 10.0 },
+  { id: "lake_hillier", name: "Pink Bubble", subtitle: "Pink saline lake · Australia", description: "A bright pink lake contrasting sharply against deep blue ocean.", lat: -34.094, lng: 123.202, zoom: 12.0 },
+  { id: "kansas_labyrinth", name: "Patchwork Earth", subtitle: "Agricultural field patterns · USA", description: "Rectangular farmland grids resemble circuit boards from orbit.", lat: 39.011, lng: -100.129, zoom: 9.0 },
+  { id: "island_fish_croatia", name: "The Fish Island", subtitle: "Fish-shaped island · Croatia", description: "An Adriatic island whose outline resembles a fish swimming offshore.", lat: 43.978, lng: 15.383, zoom: 12.0 },
+  { id: "vltava_horseshoe", name: "River Horseshoe", subtitle: "River meander · Czech Republic", description: "A dramatic looping river bend resembling a horseshoe.", lat: 49.434, lng: 14.180, zoom: 11.0 },
+  { id: "amazon_river_snake", name: "The Serpent", subtitle: "Meandering river system · Brazil", description: "Twisting Amazon tributaries resemble giant snakes weaving through rainforest.", lat: -3.465, lng: -62.215, zoom: 7.0 },
+  { id: "nevada_spiral", name: "Spiral Jetty", subtitle: "Earthwork sculpture · USA", description: "A giant spiral artwork extending into Utah's Great Salt Lake.", lat: 41.437, lng: -112.667, zoom: 13.0 },
+  { id: "new_caledonia_heart", name: "Mangrove Heart", subtitle: "Heart-shaped mangrove clearing · New Caledonia", description: "A naturally formed heart shape hidden within dense mangrove forests.", lat: -19.850, lng: 146.617, zoom: 13.0 },
+  { id: "danxia_rainbow", name: "Rainbow Mountains", subtitle: "Striped geological formation · China", description: "Layered minerals create colorful striped ridges visible from above.", lat: 38.918, lng: 100.101, zoom: 10.0 },
+  { id: "tulip_fields", name: "Flower Pixels", subtitle: "Tulip fields · Netherlands", description: "Vibrant rectangular tulip farms resemble giant color swatches.", lat: 52.268, lng: 4.556, zoom: 11.0 },
+  { id: "great_prismatic", name: "Thermal Eye", subtitle: "Hot spring basin · USA", description: "A rainbow-colored geothermal spring resembling a vivid iris.", lat: 44.525, lng: -110.838, zoom: 13.0 },
+  { id: "sossusvlei_dunes", name: "Desert Waves", subtitle: "Sand dune field · Namibia", description: "Sweeping red dunes create abstract flowing wave patterns.", lat: -24.727, lng: 15.340, zoom: 9.0 },
+  { id: "island_dragon", name: "Dragon Coast", subtitle: "Dragon-shaped peninsula · Vietnam", description: "The curving peninsula outline resembles a dragon head from orbit.", lat: 20.910, lng: 107.183, zoom: 10.0 },
+  { id: "geyser_basin", name: "Alien Palette", subtitle: "Geothermal basin · Iceland", description: "Mineral-rich geothermal pools create surreal color gradients and textures.", lat: 64.313, lng: -20.301, zoom: 12.0 },
+  { id: "crater_lake", name: "Blue Ring", subtitle: "Volcanic caldera lake · USA", description: "A deep blue volcanic crater forming a near-perfect circle.", lat: 42.944, lng: -122.109, zoom: 11.0 },
+  { id: "bourtange_star", name: "Star Fortress", subtitle: "Star-shaped fort · Netherlands", description: "A medieval fortress designed as a precise geometric star.", lat: 53.006, lng: 7.192, zoom: 13.0 },
+  { id: "rakotz_bridge", name: "Perfect Circle", subtitle: "Circular bridge reflection · Germany", description: "The bridge and its reflection create a complete stone circle.", lat: 51.540, lng: 14.635, zoom: 13.0 },
+  { id: "rice_terraces", name: "Emerald Steps", subtitle: "Rice terraces · Philippines", description: "Layered agricultural terraces resemble topographic contour art.", lat: 16.919, lng: 121.056, zoom: 11.0 },
+  { id: "red_beach", name: "Crimson Marsh", subtitle: "Red wetland vegetation · China", description: "Seasonal red plants transform wetlands into bright crimson textures.", lat: 41.096, lng: 121.816, zoom: 11.0 },
+  { id: "salt_river_tree", name: "River Tree", subtitle: "Branching river estuary · Argentina", description: "Water channels spread outward like tree roots or veins.", lat: -42.493, lng: -64.284, zoom: 8.0 },
+  { id: "fingal_head", name: "Hexagon Coast", subtitle: "Basalt column formation · UK", description: "Naturally occurring hexagonal rock columns form geometric coastlines.", lat: 55.240, lng: -6.511, zoom: 13.0 },
+  { id: "utah_dead_horse", name: "Stone Horseshoe", subtitle: "Canyon river bend · USA", description: "A dramatic canyon loop resembling a giant carved horseshoe.", lat: 38.482, lng: -109.741, zoom: 11.0 },
+  { id: "lake_natron", name: "Blood Lake", subtitle: "Alkaline salt lake · Tanzania", description: "Mineral-rich waters create vivid red and orange abstract patterns.", lat: -2.423, lng: 36.002, zoom: 9.0 },
+  { id: "everglades_maze", name: "Water Labyrinth", subtitle: "Wetland channels · USA", description: "Interwoven waterways form intricate maze-like patterns through marshlands.", lat: 25.286, lng: -80.898, zoom: 9.0 },
+  { id: "atakama_hand", name: "Desert Hand", subtitle: "Giant sculpture · Chile", description: "An enormous hand sculpture emerging from desert sands.", lat: -24.152, lng: -70.127, zoom: 13.0 },
+  { id: "turkmen_gates", name: "Fire Portal", subtitle: "Burning gas crater · Turkmenistan", description: "A continuously burning crater glowing like a portal in the desert.", lat: 40.252, lng: 58.440, zoom: 12.0 },
+  { id: "mesa_arch", name: "Stone Crescent", subtitle: "Natural rock arch · USA", description: "A crescent-shaped arch perched dramatically over canyon landscapes.", lat: 38.389, lng: -109.738, zoom: 13.0 },
+  { id: "great_wall", name: "Mountain Serpent", subtitle: "Great Wall section · China", description: "The wall winds across mountain ridges like a giant serpent.", lat: 40.431, lng: 116.570, zoom: 11.0 },
+  { id: "volcano_eye", name: "Volcanic Iris", subtitle: "Volcanic crater · Indonesia", description: "A crater lake resembling a glowing blue eye from above.", lat: -8.058, lng: 114.242, zoom: 12.0 },
+  { id: "river_leaf", name: "Leaf Delta", subtitle: "Branching river delta · Russia", description: "River channels spread like veins across a giant leaf.", lat: 72.372, lng: 126.716, zoom: 7.0 },
+  { id: "burning_mountain", name: "Smoldering Earth", subtitle: "Coal fire region · Australia", description: "An underground coal seam burns beneath rugged terrain for centuries.", lat: -32.356, lng: 150.114, zoom: 11.0 },
+  { id: "cape_cod_hook", name: "The Hook", subtitle: "Curved peninsula · USA", description: "Cape Cod curves dramatically into the Atlantic like a giant hook.", lat: 41.668, lng: -70.296, zoom: 8.0 },
+  { id: "iceland_river_brain", name: "Brain Rivers", subtitle: "Glacial river network · Iceland", description: "Braided rivers create wrinkled patterns resembling brain folds.", lat: 64.018, lng: -17.076, zoom: 9.0 },
+  { id: "ethiopia_danakil", name: "Acid Palette", subtitle: "Volcanic hydrothermal field · Ethiopia", description: "Sulfur pools and mineral deposits form surreal neon landscapes.", lat: 14.241, lng: 40.300, zoom: 11.0 },
+  { id: "orca_island", name: "Whale Island", subtitle: "Orca-shaped island · Antarctica", description: "An island outline resembling a breaching whale in icy waters.", lat: -64.728, lng: -62.661, zoom: 10.0 },
+  { id: "baja_whirlpool", name: "Ocean Spiral", subtitle: "Coastal tidal pattern · Mexico", description: "Currents and sediments create giant swirling ocean patterns.", lat: 31.738, lng: -114.727, zoom: 8.0 },
+  { id: "paris_star", name: "Urban Starburst", subtitle: "Radial city layout · France", description: "Paris avenues radiate outward like a geometric star pattern.", lat: 48.873, lng: 2.295, zoom: 12.0 },
+  { id: "tokyo_grid", name: "Neon Circuit", subtitle: "Dense urban grid · Japan", description: "Tokyo's urban density resembles intricate motherboard circuitry.", lat: 35.676, lng: 139.650, zoom: 11.0 },
+  { id: "alberta_tar_patterns", name: "Oil Abstract", subtitle: "Tailings pond formations · Canada", description: "Industrial extraction ponds create surreal abstract color compositions.", lat: 57.102, lng: -111.642, zoom: 10.0 },
 ];
 
 // ── Build sidebar cards ───────────────────────────────────
@@ -242,10 +267,14 @@ const map = new maplibregl.Map({
       source: "satellite",
     }],
   },
+  projection: "globe",
   center: [20, 18],
   zoom: 1.6,
   maxZoom: 18,
   minZoom: 1,
+  dragRotate: true,
+  touchZoomRotate: true,
+  cooperativeGestures: false,
   attributionControl: false,
 });
 
@@ -277,6 +306,10 @@ map.on("load", () => {
     try { map.setProjection({ type: "globe" }); } catch (_) {}
   }
 
+  // Enable two-finger rotation (API varies by MapLibre version)
+  try { map.touchZoomRotate.enableRotation(); } catch (_) {}
+  try { map.scrollZoom.setWheelZoomRate(1 / 200); } catch (_) {}
+
   // Atmosphere
   try {
     map.setFog({
@@ -292,9 +325,10 @@ map.on("load", () => {
   startRotation();
 });
 
-// Stop auto-rotate when user grabs the globe
+// Stop auto-rotate on any user interaction
 map.on("mousedown", () => { userInteracted = true; stopRotation(); });
 map.on("touchstart", () => { userInteracted = true; stopRotation(); });
+map.on("wheel",      () => { userInteracted = true; stopRotation(); });
 
 // ── Selection ─────────────────────────────────────────────
 function selectObject(id) {
