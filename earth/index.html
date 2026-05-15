@@ -115,6 +115,19 @@
     }
     .object-card.selected .card-loc { color: #666; }
 
+    .card-edit {
+      font-size: 9px;
+      color: #2e2e2e;
+      cursor: pointer;
+      margin-left: 8px;
+      display: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+    .object-card.selected .card-edit { display: inline; }
+    .card-edit:hover { color: #888; }
+
     .card-coords {
       font-size: 10px;
       color: #383838;
@@ -490,8 +503,11 @@ function appendSection(label, objects) {
     card.className = "object-card";
     card.id = `card-${obj.id}`;
     const loc = getDisplayLocation(obj);
+    const editBtn = obj.source === "user"
+      ? `<span class="card-edit" onclick="event.stopPropagation();editObject('${obj.id}')">edit</span>`
+      : "";
     card.innerHTML = `
-      <div class="card-name">${obj.name}</div>
+      <div class="card-name">${obj.name}${editBtn}</div>
       ${obj.description ? `<div class="card-desc">${obj.description}</div>` : ""}
       <div class="card-where">
         ${loc ? `<div class="card-loc">· ${loc}</div>` : ""}
@@ -612,6 +628,22 @@ function selectObject(id) {
   }
 }
 
+// ── Edit existing user object ─────────────────────────────
+let editingId = null;
+
+function editObject(id) {
+  const obj = userObjects.find(o => o.id === id);
+  if (!obj) return;
+  editingId = id;
+  document.getElementById("add-form-title").textContent = "Edit object";
+  document.getElementById("add-form-meta").textContent =
+    `${formatCoord(obj.lat, "NS")}  ${formatCoord(obj.lng, "EW")}  ·  zoom ${obj.zoom}`;
+  document.getElementById("form-name").value = obj.name;
+  document.getElementById("form-desc").value = obj.description || "";
+  document.getElementById("add-modal").classList.remove("hidden");
+  setTimeout(() => document.getElementById("form-name").focus(), 50);
+}
+
 // ── Add mode ──────────────────────────────────────────────
 let addMode = false;
 let pendingAdd = null;
@@ -653,19 +685,31 @@ map.on("click", async (e) => {
 
 function saveObject() {
   const name = document.getElementById("form-name").value.trim();
-  if (!name || !pendingAdd) { document.getElementById("form-name").focus(); return; }
+  if (!name) { document.getElementById("form-name").focus(); return; }
+  const description = document.getElementById("form-desc").value.trim();
 
+  if (editingId) {
+    const obj = userObjects.find(o => o.id === editingId);
+    if (obj) { obj.name = name; obj.description = description; }
+    const id = editingId;
+    saveUserObjects();
+    closeAddForm();
+    renderSidebar();
+    selectObject(id);
+    return;
+  }
+
+  if (!pendingAdd) return;
   const newObj = {
     id: "user_" + Date.now(),
     name,
     displayLocation: pendingAdd.displayLocation || "",
-    description: document.getElementById("form-desc").value.trim(),
+    description,
     lat: pendingAdd.lat,
     lng: pendingAdd.lng,
     zoom: pendingAdd.zoom,
     source: "user",
   };
-
   userObjects.unshift(newObj);
   saveUserObjects();
   closeAddForm();
@@ -675,7 +719,9 @@ function saveObject() {
 
 function closeAddForm() {
   document.getElementById("add-modal").classList.add("hidden");
+  document.getElementById("add-form-title").textContent = "New object";
   pendingAdd = null;
+  editingId = null;
 }
 
 document.addEventListener("keydown", (e) => {
