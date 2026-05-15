@@ -172,6 +172,129 @@
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
+
+    /* ── Sidebar header row ──────────────────────────────── */
+    #sidebar-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    #add-mode-btn {
+      width: 22px;
+      height: 22px;
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #555;
+      font-size: 15px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    #add-mode-btn:hover { color: #bbb; border-color: #555; }
+    #add-mode-btn.active { background: #e8e8e8; color: #0a0a0a; border-color: #e8e8e8; }
+
+    /* ── Section headers ─────────────────────────────────── */
+    .section-header {
+      padding: 12px 20px 5px;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2e2e2e;
+    }
+
+    /* ── Add mode hint ───────────────────────────────────── */
+    #add-hint {
+      position: absolute;
+      top: 16px;
+      left: calc(272px + (100vw - 272px) / 2);
+      transform: translateX(-50%);
+      background: rgba(10,10,10,0.8);
+      border: 1px solid #2a2a2a;
+      border-radius: 5px;
+      padding: 5px 12px;
+      font-size: 11px;
+      color: #888;
+      pointer-events: none;
+      z-index: 20;
+      display: none;
+    }
+
+    /* ── Add form modal ──────────────────────────────────── */
+    #add-modal {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 272px; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(3px);
+    }
+    #add-modal.hidden { display: none; }
+
+    #add-form {
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 20px;
+      width: 290px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    #add-form-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: #e8e8e8;
+      margin-bottom: 2px;
+    }
+    #add-form-meta {
+      font-size: 10px;
+      color: #444;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.03em;
+    }
+    #add-form input {
+      background: #0a0a0a;
+      border: 1px solid #222;
+      border-radius: 4px;
+      color: #e8e8e8;
+      font-size: 12px;
+      padding: 8px 10px;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    #add-form input::placeholder { color: #3a3a3a; }
+    #add-form input:focus { border-color: #444; }
+    #add-form-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    #add-form-actions button {
+      flex: 1;
+      padding: 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid #2a2a2a;
+      transition: all 0.15s;
+    }
+    #form-cancel { background: transparent; color: #555; }
+    #form-cancel:hover { color: #999; border-color: #444; }
+    #form-save { background: #e8e8e8; color: #0a0a0a; border-color: #e8e8e8; }
+    #form-save:hover { background: #fff; }
   </style>
 </head>
 <body>
@@ -179,7 +302,10 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <a id="back-link" href="../">← y2k9</a>
-    <h1>Earth Shapes</h1>
+    <div id="sidebar-title-row">
+      <h1>Earth Shapes</h1>
+      <button id="add-mode-btn" title="Add mode" onclick="toggleAddMode()">+</button>
+    </div>
     <p>Places on Earth that look like something else.</p>
   </div>
   <div id="objects-list"></div>
@@ -187,6 +313,21 @@
 </div>
 
 <div id="map"></div>
+
+<div id="add-hint">Click anywhere on the map to place an object</div>
+
+<div id="add-modal" class="hidden">
+  <div id="add-form">
+    <div id="add-form-title">New object</div>
+    <div id="add-form-meta"></div>
+    <input id="form-name" type="text" placeholder="Name  (e.g. The Eye)" autocomplete="off" />
+    <input id="form-subtitle" type="text" placeholder="Subtitle · Location" autocomplete="off" />
+    <div id="add-form-actions">
+      <button id="form-cancel" onclick="closeAddForm()">Cancel</button>
+      <button id="form-save" onclick="saveObject()">Save</button>
+    </div>
+  </div>
+</div>
 
 <div id="info-bar">
   <div id="compass-btn" title="Reset north" onclick="map.resetNorth({ duration: 500 })">
@@ -273,27 +414,62 @@ const OBJECTS = [
   { id: "alberta_tar_patterns", name: "Oil Abstract", subtitle: "Tailings pond formations · Canada", description: "Industrial extraction ponds create surreal abstract color compositions.", lat: 57.102, lng: -111.642, zoom: 10.0 },
 ];
 
-// ── Build sidebar cards ───────────────────────────────────
-const list = document.getElementById("objects-list");
+// ── Tag all initial objects as ChatGPT-sourced ───────────
+OBJECTS.forEach(o => o.source = "chatgpt");
 
-OBJECTS.forEach(obj => {
-  const card = document.createElement("div");
-  card.className = "object-card";
-  card.id = `card-${obj.id}`;
-  card.innerHTML = `
-    <div class="card-name">${obj.name}</div>
-    <div class="card-sub">${obj.subtitle}</div>
-    <div class="card-desc">${obj.description}</div>
-    <div class="card-coords">${formatCoord(obj.lat, "NS")} &nbsp; ${formatCoord(obj.lng, "EW")}</div>
-  `;
-  card.addEventListener("click", () => selectObject(obj.id));
-  list.appendChild(card);
-});
+// ── User objects (persisted in localStorage) ──────────────
+function loadUserObjects() {
+  try { return JSON.parse(localStorage.getItem("earth_user_objects") || "[]"); }
+  catch { return []; }
+}
+function saveUserObjects() {
+  localStorage.setItem("earth_user_objects", JSON.stringify(userObjects));
+}
+let userObjects = loadUserObjects();
+
+function allObjects() { return [...userObjects, ...OBJECTS]; }
+
+// ── Sidebar rendering ─────────────────────────────────────
+const list   = document.getElementById("objects-list");
+const footer = document.getElementById("sidebar-footer");
+
+function renderSidebar() {
+  list.innerHTML = "";
+  if (userObjects.length > 0) appendSection("My Additions", userObjects);
+  appendSection("ChatGPT Suggestions", OBJECTS);
+  footer.innerHTML = `${allObjects().length} objects &nbsp;·&nbsp; imagery © Esri`;
+  if (selectedId) {
+    const card = document.getElementById(`card-${selectedId}`);
+    if (card) card.classList.add("selected");
+  }
+}
+
+function appendSection(label, objects) {
+  const hdr = document.createElement("div");
+  hdr.className = "section-header";
+  hdr.textContent = `${label} (${objects.length})`;
+  list.appendChild(hdr);
+  objects.forEach(obj => {
+    const card = document.createElement("div");
+    card.className = "object-card";
+    card.id = `card-${obj.id}`;
+    card.innerHTML = `
+      <div class="card-name">${obj.name}</div>
+      <div class="card-sub">${obj.subtitle}</div>
+      <div class="card-desc">${obj.description || ""}</div>
+      <div class="card-coords">${formatCoord(obj.lat, "NS")} &nbsp; ${formatCoord(obj.lng, "EW")}</div>
+    `;
+    card.addEventListener("click", () => selectObject(obj.id));
+    list.appendChild(card);
+  });
+}
 
 function formatCoord(val, axis) {
   const dir = axis === "NS" ? (val >= 0 ? "N" : "S") : (val >= 0 ? "E" : "W");
   return `${Math.abs(val).toFixed(3)}° ${dir}`;
 }
+
+renderSidebar();
 
 // ── Map ───────────────────────────────────────────────────
 const map = new maplibregl.Map({
@@ -365,16 +541,18 @@ map.on("mouseleave", () => { coordsEl.textContent = "— °  — °"; });
 
 // ── Selection ─────────────────────────────────────────────
 function selectObject(id) {
-  const obj = OBJECTS.find(o => o.id === id);
+  const obj = allObjects().find(o => o.id === id);
   if (!obj) return;
 
   if (selectedId && selectedId !== id) {
-    document.getElementById(`card-${selectedId}`).classList.remove("selected");
+    const prev = document.getElementById(`card-${selectedId}`);
+    if (prev) prev.classList.remove("selected");
   }
 
   const alreadySelected = selectedId === id;
   selectedId = id;
-  document.getElementById(`card-${id}`).classList.add("selected");
+  const card = document.getElementById(`card-${id}`);
+  if (card) card.classList.add("selected");
 
   if (!alreadySelected) {
     map.flyTo({
@@ -386,6 +564,80 @@ function selectObject(id) {
     });
   }
 }
+
+// ── Add mode ──────────────────────────────────────────────
+let addMode = false;
+let pendingAdd = null;
+
+function toggleAddMode() {
+  addMode = !addMode;
+  document.getElementById("add-mode-btn").classList.toggle("active", addMode);
+  map.getCanvas().style.cursor = addMode ? "crosshair" : "";
+  document.getElementById("add-hint").style.display = addMode ? "block" : "none";
+}
+
+map.on("click", async (e) => {
+  if (!addMode) return;
+
+  const { lat, lng } = e.lngLat;
+  const zoom = parseFloat(map.getZoom().toFixed(1));
+  pendingAdd = { lat, lng, zoom };
+
+  document.getElementById("add-form-meta").textContent =
+    `${formatCoord(lat, "NS")}  ${formatCoord(lng, "EW")}  ·  zoom ${zoom}`;
+  document.getElementById("form-name").value = "";
+  document.getElementById("form-subtitle").value = "";
+  document.getElementById("add-modal").classList.remove("hidden");
+  setTimeout(() => document.getElementById("form-name").focus(), 50);
+
+  // Reverse geocode in background — fill subtitle when ready
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10`,
+      { headers: { "Accept-Language": "en" } }
+    );
+    const data = await res.json();
+    const addr = data.address || {};
+    const place = addr.city || addr.town || addr.village || addr.county || addr.state || "";
+    const country = addr.country || "";
+    const suggestion = [place, country].filter(Boolean).join(", ");
+    const subInput = document.getElementById("form-subtitle");
+    if (suggestion && !subInput.value) subInput.value = suggestion;
+  } catch (_) {}
+});
+
+function saveObject() {
+  const name = document.getElementById("form-name").value.trim();
+  if (!name || !pendingAdd) { document.getElementById("form-name").focus(); return; }
+
+  const newObj = {
+    id: "user_" + Date.now(),
+    name,
+    subtitle: document.getElementById("form-subtitle").value.trim() || "User addition",
+    description: "",
+    lat: pendingAdd.lat,
+    lng: pendingAdd.lng,
+    zoom: pendingAdd.zoom,
+    source: "user",
+  };
+
+  userObjects.unshift(newObj);
+  saveUserObjects();
+  closeAddForm();
+  renderSidebar();
+  selectObject(newObj.id);
+}
+
+function closeAddForm() {
+  document.getElementById("add-modal").classList.add("hidden");
+  pendingAdd = null;
+}
+
+document.addEventListener("keydown", (e) => {
+  if (document.getElementById("add-modal").classList.contains("hidden")) return;
+  if (e.key === "Escape") closeAddForm();
+  if (e.key === "Enter") saveObject();
+});
 </script>
 
 </body>
