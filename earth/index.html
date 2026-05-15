@@ -355,6 +355,97 @@
     #form-cancel:hover { color: #555; border-color: #ccc; }
     #form-save { background: #e8724a; color: #fff; border-color: #e8724a; font-weight: 500; }
     #form-save:hover { background: #d4603a; border-color: #d4603a; }
+
+    /* ── Mobile UI (hidden on desktop) ──────────────────── */
+    #mobile-title, #mobile-strip { display: none; }
+
+    @media (max-width: 768px) {
+      /* Hide all desktop chrome */
+      #sidebar, #bottom-bar, #add-hint, #add-modal { display: none !important; }
+
+      /* Floating title */
+      #mobile-title {
+        display: block;
+        position: fixed;
+        top: 54px;
+        left: 20px;
+        font-size: 17px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.02em;
+        text-shadow: 0 1px 12px rgba(0,0,0,0.45);
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      /* Floating card strip */
+      #mobile-strip {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: fixed;
+        bottom: 44px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+      }
+
+      /* Location label above cards */
+      #mobile-location-label {
+        display: block;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 500;
+        color: #fff;
+        text-shadow: 0 1px 10px rgba(0,0,0,0.55);
+        letter-spacing: 0.01em;
+        min-height: 1.4em;
+        transition: opacity 0.2s;
+      }
+
+      /* Horizontal scroll */
+      #mobile-cards {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 6px calc(50vw - 120px);
+      }
+      #mobile-cards::-webkit-scrollbar { display: none; }
+
+      /* Individual floating card */
+      .mobile-card {
+        min-width: 240px;
+        max-width: 240px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 16px 18px;
+        scroll-snap-align: center;
+        flex-shrink: 0;
+        box-shadow: 0 6px 28px rgba(0,0,0,0.2);
+        border-left: 3px solid transparent;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+      }
+      .mobile-card.active {
+        border-left-color: #e8724a;
+        background: #fff9f7;
+      }
+      .mobile-card-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1a1a1a;
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+      }
+      .mobile-card-desc {
+        font-size: 11px;
+        color: #aaa;
+        line-height: 1.5;
+      }
+    }
   </style>
 </head>
 <body>
@@ -372,6 +463,12 @@
 </div>
 
 <div id="map"></div>
+
+<div id="mobile-title">Earthgazing</div>
+<div id="mobile-strip">
+  <div id="mobile-location-label"></div>
+  <div id="mobile-cards"></div>
+</div>
 
 <div id="add-hint">Click anywhere on the map to place an object</div>
 
@@ -595,7 +692,7 @@ function formatCoord(val, axis) {
 }
 
 let selectedId = null;
-loadUserObjects().then(data => { userObjects = data; renderSidebar(); });
+loadUserObjects().then(data => { userObjects = data; renderSidebar(); renderMobileStrip(); });
 
 // ── Map ───────────────────────────────────────────────────
 const map = new maplibregl.Map({
@@ -827,6 +924,52 @@ function closeAddForm() {
   document.getElementById("add-form-title").textContent = "New object";
   pendingAdd = null;
   editingId = null;
+}
+
+// ── Mobile card strip ─────────────────────────────────────
+function renderMobileStrip() {
+  const container = document.getElementById("mobile-cards");
+  const locationLabel = document.getElementById("mobile-location-label");
+  if (!container) return;
+  container.innerHTML = "";
+
+  userObjects.forEach((obj, i) => {
+    const card = document.createElement("div");
+    card.className = "mobile-card" + (i === 0 ? " active" : "");
+    card.dataset.id = obj.id;
+    card.innerHTML = `
+      <div class="mobile-card-name">${obj.name}</div>
+      ${obj.description ? `<div class="mobile-card-desc">${obj.description}</div>` : ""}
+    `;
+    container.appendChild(card);
+  });
+
+  if (userObjects[0]) {
+    locationLabel.textContent = userObjects[0].displayLocation || "";
+    map.flyTo({ center: [userObjects[0].lng, userObjects[0].lat], zoom: userObjects[0].zoom, duration: 1800, curve: 1.2, essential: true });
+  }
+
+  let scrollTimer;
+  container.addEventListener("scroll", () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const containerRect = container.getBoundingClientRect();
+      const viewCenter = containerRect.left + containerRect.width / 2;
+      let closest = null, closestDist = Infinity;
+      container.querySelectorAll(".mobile-card").forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const dist = Math.abs((rect.left + rect.width / 2) - viewCenter);
+        if (dist < closestDist) { closestDist = dist; closest = card; }
+      });
+      if (!closest) return;
+      const obj = userObjects.find(o => o.id === closest.dataset.id);
+      if (!obj) return;
+      container.querySelectorAll(".mobile-card").forEach(c => c.classList.remove("active"));
+      closest.classList.add("active");
+      locationLabel.textContent = obj.displayLocation || "";
+      map.flyTo({ center: [obj.lng, obj.lat], zoom: obj.zoom, duration: 1800, curve: 1.2, essential: true });
+    }, 80);
+  });
 }
 
 document.addEventListener("keydown", (e) => {
