@@ -7,6 +7,7 @@
   <link rel="icon" type="image/jpeg" href="../favicon.jpg" />
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -497,15 +498,44 @@ const OBJECTS = [
 // ── Tag all initial objects as ChatGPT-sourced ───────────
 OBJECTS.forEach(o => o.source = "chatgpt");
 
-// ── User objects (persisted in localStorage) ──────────────
-function loadUserObjects() {
-  try { return JSON.parse(localStorage.getItem("earth_user_objects") || "[]"); }
-  catch { return []; }
+// ── Supabase ──────────────────────────────────────────────
+const db = supabase.createClient(
+  "https://noqkqcopjkkgugscymbr.supabase.co",
+  "sb_publishable_IGIPKkuJKW57yMPl-AECZw_2a3-25ke"
+);
+
+// ── User objects ──────────────────────────────────────────
+let userObjects = [];
+
+async function loadUserObjects() {
+  try {
+    const { data, error } = await db.from("user_objects")
+      .select("*").order("created_at", { ascending: false });
+    if (error) throw error;
+    return data.map(r => ({
+      id: r.id, name: r.name, description: r.description || "",
+      displayLocation: r.display_location || "",
+      lat: r.lat, lng: r.lng, zoom: r.zoom, source: "user",
+    }));
+  } catch {
+    try { return JSON.parse(localStorage.getItem("earth_user_objects") || "[]"); }
+    catch { return []; }
+  }
 }
-function saveUserObjects() {
-  localStorage.setItem("earth_user_objects", JSON.stringify(userObjects));
+
+async function persistObject(obj) {
+  try {
+    const { error } = await db.from("user_objects").upsert({
+      id: obj.id, name: obj.name,
+      description: obj.description || "",
+      display_location: obj.displayLocation || "",
+      lat: obj.lat, lng: obj.lng, zoom: obj.zoom,
+    });
+    if (error) throw error;
+  } catch {
+    localStorage.setItem("earth_user_objects", JSON.stringify(userObjects));
+  }
 }
-let userObjects = loadUserObjects();
 
 function allObjects() { return [...userObjects, ...OBJECTS]; }
 
@@ -576,7 +606,7 @@ function formatCoord(val, axis) {
 }
 
 let selectedId = null;
-renderSidebar();
+loadUserObjects().then(data => { userObjects = data; renderSidebar(); });
 
 // ── Map ───────────────────────────────────────────────────
 const map = new maplibregl.Map({
@@ -769,7 +799,7 @@ map.on("click", async (e) => {
   } catch (_) {}
 });
 
-function saveObject() {
+async function saveObject() {
   const name = document.getElementById("form-name").value.trim();
   if (!name) { document.getElementById("form-name").focus(); return; }
   const description = document.getElementById("form-desc").value.trim();
@@ -778,7 +808,7 @@ function saveObject() {
     const obj = userObjects.find(o => o.id === editingId);
     if (obj) { obj.name = name; obj.description = description; }
     const id = editingId;
-    saveUserObjects();
+    await persistObject(obj);
     closeAddForm();
     renderSidebar();
     selectObject(id);
@@ -797,7 +827,7 @@ function saveObject() {
     source: "user",
   };
   userObjects.unshift(newObj);
-  saveUserObjects();
+  await persistObject(newObj);
   closeAddForm();
   renderSidebar();
   selectObject(newObj.id);
