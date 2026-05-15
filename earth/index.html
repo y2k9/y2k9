@@ -512,6 +512,21 @@ async function loadUserObjects() {
     const { data, error } = await db.from("user_objects")
       .select("*").order("created_at", { ascending: false });
     if (error) throw error;
+
+    // One-time migration: if Supabase is empty, upload whatever is in localStorage
+    if (data.length === 0) {
+      const local = JSON.parse(localStorage.getItem("earth_user_objects") || "[]");
+      if (local.length > 0) {
+        await db.from("user_objects").upsert(local.map(o => ({
+          id: o.id, name: o.name,
+          description: o.description || "",
+          display_location: o.displayLocation || o.subtitle || "",
+          lat: o.lat, lng: o.lng, zoom: o.zoom,
+        })));
+        return local.map(o => ({ ...o, source: "user" }));
+      }
+    }
+
     return data.map(r => ({
       id: r.id, name: r.name, description: r.description || "",
       displayLocation: r.display_location || "",
