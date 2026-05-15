@@ -195,9 +195,25 @@
     #compass-btn:hover { opacity: 1; }
     #compass-btn svg { display: block; }
 
+    #coords-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    #location-name {
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      min-height: 1.2em;
+      transition: opacity 0.2s ease;
+    }
+    #location-name.fading { opacity: 0.35; }
+
     #coords {
       font-size: 11px;
-      color: #666;
+      color: #555;
       letter-spacing: 0.04em;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -384,7 +400,10 @@
         <circle cx="11" cy="11" r="1.2" fill="#666"/>
       </svg>
     </div>
-    <span id="coords">— °,  — °</span>
+    <div id="coords-group">
+      <span id="location-name"></span>
+      <span id="coords">— °  — °</span>
+    </div>
   </div>
   <button id="add-bar-btn" title="Add mode" onclick="toggleAddMode()">+</button>
 </div>
@@ -592,15 +611,58 @@ map.on("rotate", () => {
   document.getElementById("compass-needle").style.transform = `rotate(${map.getBearing()}deg)`;
 });
 
-// Live coordinates
-const coordsEl = document.getElementById("coords");
+// Live coordinates + reverse-geocoded location name
+const coordsEl   = document.getElementById("coords");
+const locationEl = document.getElementById("location-name");
+let geocodeTimer = null;
+
+function nomZoomFor(mapZoom) {
+  if (mapZoom < 4)  return 3;   // country
+  if (mapZoom < 6)  return 5;   // state / province
+  if (mapZoom < 9)  return 8;   // county / region
+  if (mapZoom < 12) return 10;  // city / town
+  return 14;                    // suburb / neighbourhood
+}
+
+function pickLabel(addr, nomZoom) {
+  if (nomZoom <= 3)  return addr.country || "";
+  if (nomZoom <= 5)  return addr.state || addr.region || addr.country || "";
+  if (nomZoom <= 8)  return addr.county || addr.state_district || addr.state || addr.country || "";
+  if (nomZoom <= 10) return addr.city || addr.town || addr.village || addr.municipality || addr.county || addr.state || "";
+  return addr.suburb || addr.neighbourhood || addr.quarter || addr.city || addr.town || addr.village || "";
+}
+
+async function fetchLocation(lat, lng) {
+  const nz = nomZoomFor(map.getZoom());
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=${nz}`,
+      { headers: { "Accept-Language": "en" } }
+    );
+    const data = await res.json();
+    const label = pickLabel(data.address || {}, nz);
+    locationEl.classList.remove("fading");
+    locationEl.textContent = label;
+  } catch (_) {}
+}
+
 map.on("mousemove", (e) => {
   const { lat, lng } = e.lngLat;
   const la = `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}`;
   const lo = `${Math.abs(lng).toFixed(4)}° ${lng >= 0 ? "E" : "W"}`;
   coordsEl.textContent = `${la}  ${lo}`;
+
+  locationEl.classList.add("fading");
+  clearTimeout(geocodeTimer);
+  geocodeTimer = setTimeout(() => fetchLocation(lat, lng), 500);
 });
-map.on("mouseleave", () => { coordsEl.textContent = "— °  — °"; });
+
+map.on("mouseleave", () => {
+  coordsEl.textContent = "— °  — °";
+  clearTimeout(geocodeTimer);
+  locationEl.classList.remove("fading");
+  locationEl.textContent = "";
+});
 
 // ── Selection ─────────────────────────────────────────────
 function selectObject(id) {
