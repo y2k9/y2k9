@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Earth Shapes — y2k9</title>
   <link rel="icon" type="image/jpeg" href="../favicon.jpg" />
-  <link href="https://unpkg.com/maplibre-gl@4.3.2/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/maplibre-gl@4.3.2/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -134,20 +134,44 @@
 
     .maplibregl-canvas { outline: none; touch-action: none; }
 
-    /* ── Compass ─────────────────────────────────────────── */
-    #compass {
+    /* ── Info bar ────────────────────────────────────────── */
+    #info-bar {
       position: absolute;
       bottom: 20px;
-      right: 20px;
-      width: 32px;
-      height: 32px;
+      left: calc(272px + (100vw - 272px) / 2);
+      transform: translateX(-50%);
       z-index: 20;
-      cursor: pointer;
-      opacity: 0.45;
-      transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(10, 10, 10, 0.72);
+      border: 1px solid #222;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 6px;
+      padding: 6px 12px 6px 8px;
+      pointer-events: none;
     }
-    #compass:hover { opacity: 0.85; }
-    #compass svg { display: block; }
+
+    #compass-btn {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      cursor: pointer;
+      pointer-events: auto;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+    #compass-btn:hover { opacity: 1; }
+    #compass-btn svg { display: block; }
+
+    #coords {
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -164,12 +188,15 @@
 
 <div id="map"></div>
 
-<div id="compass" title="Click to reset north" onclick="map.resetNorth({ duration: 500 })">
-  <svg id="compass-needle" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="16,4 19,16 16,14 13,16" fill="#e8e8e8"/>
-    <polygon points="16,28 19,16 16,18 13,16" fill="#555"/>
-    <circle cx="16" cy="16" r="1.5" fill="#888"/>
-  </svg>
+<div id="info-bar">
+  <div id="compass-btn" title="Reset north" onclick="map.resetNorth({ duration: 500 })">
+    <svg id="compass-needle" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="11,2 13,11 11,9.5 9,11" fill="#e8e8e8"/>
+      <polygon points="11,20 13,11 11,12.5 9,11" fill="#444"/>
+      <circle cx="11" cy="11" r="1.2" fill="#666"/>
+    </svg>
+  </div>
+  <span id="coords">— °,  — °</span>
 </div>
 
 <script>
@@ -289,6 +316,7 @@ const map = new maplibregl.Map({
       type: "raster",
       source: "satellite",
     }],
+    projection: { type: "globe" },
   },
   projection: "globe",
   center: [20, 18],
@@ -320,11 +348,20 @@ map.on("load", () => {
   } catch (_) {}
 });
 
-// Rotate compass needle as bearing changes
+// Compass needle tracks bearing
 map.on("rotate", () => {
-  const bearing = map.getBearing();
-  document.getElementById("compass-needle").style.transform = `rotate(${bearing}deg)`;
+  document.getElementById("compass-needle").style.transform = `rotate(${map.getBearing()}deg)`;
 });
+
+// Live coordinates
+const coordsEl = document.getElementById("coords");
+map.on("mousemove", (e) => {
+  const { lat, lng } = e.lngLat;
+  const la = `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}`;
+  const lo = `${Math.abs(lng).toFixed(4)}° ${lng >= 0 ? "E" : "W"}`;
+  coordsEl.textContent = `${la}  ${lo}`;
+});
+map.on("mouseleave", () => { coordsEl.textContent = "— °  — °"; });
 
 // ── Selection ─────────────────────────────────────────────
 function selectObject(id) {
