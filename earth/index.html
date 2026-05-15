@@ -469,6 +469,7 @@ function formatCoord(val, axis) {
   return `${Math.abs(val).toFixed(3)}° ${dir}`;
 }
 
+let selectedId = null;
 renderSidebar();
 
 // ── Map ───────────────────────────────────────────────────
@@ -504,8 +505,6 @@ const map = new maplibregl.Map({
   cooperativeGestures: false,
   attributionControl: false,
 });
-
-let selectedId = null;
 
 map.on("load", () => {
   try { map.setProjection("globe"); } catch (_) {}
