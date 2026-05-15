@@ -121,9 +121,25 @@ kbd {
   color: #f0f0f0;
 }
 
+.card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .card-title {
   font-size: 0.95rem;
   font-weight: 400;
+}
+
+.card-sub {
+  font-size: 0.78rem;
+  color: #555;
+  transition: color 0.15s ease;
+}
+
+.card:hover .card-sub {
+  color: #777;
 }
 
 .card-arrow {
