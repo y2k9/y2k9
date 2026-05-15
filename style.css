@@ -12,18 +12,127 @@ body {
   background-color: #0a0a0a;
   color: #e8e8e8;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* ── Intro ── */
+#intro {
+  height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
 }
 
-main {
-  text-align: center;
-}
-
-main p {
+#intro p {
   font-size: clamp(1.25rem, 4vw, 2rem);
   font-weight: 400;
   letter-spacing: -0.01em;
+}
+
+#enter-btn {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+
+  background: #fff;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.6rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+#enter-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#enter-btn:hover {
+  background: #e0e0e0;
+}
+
+/* ── Transition out ── */
+#intro.hiding {
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+/* ── Main ── */
+#main {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+#main.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.heading {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #888;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+/* ── Cards ── */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid #222;
+  border-radius: 12px;
+  text-decoration: none;
   color: #e8e8e8;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.card:hover {
+  border-color: #444;
+  background: #111;
+}
+
+.card.placeholder {
+  color: #555;
+}
+
+.card.placeholder:hover {
+  color: #777;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.card-arrow {
+  font-size: 0.9rem;
+  color: #555;
+  transition: transform 0.2s ease;
+}
+
+.card:hover .card-arrow {
+  transform: translateX(3px);
 }

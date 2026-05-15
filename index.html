@@ -8,8 +8,28 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main>
+
+  <!-- Intro screen -->
+  <div id="intro">
     <p>hi my name is yash</p>
-  </main>
+    <button id="enter-btn" onclick="enter()">enter website</button>
+  </div>
+
+  <!-- Main content -->
+  <div id="main">
+    <p class="heading">here's some stuff</p>
+    <div class="grid">
+      <a href="/earth" class="card">
+        <span class="card-title">Objects on Earth</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a href="https://google.com" class="card placeholder">
+        <span class="card-title">coming soon</span>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
