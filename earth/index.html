@@ -254,7 +254,19 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #2e2e2e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+    .section-export {
+      font-size: 9px;
+      color: #2e2e2e;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .section-export:hover { color: #888; }
 
     /* ── Add mode hint ───────────────────────────────────── */
     #add-hint {
@@ -512,10 +524,21 @@ function renderSidebar() {
   }
 }
 
+function exportUserObjects() {
+  const blob = new Blob([JSON.stringify(userObjects, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "earth-my-additions.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 function appendSection(label, objects) {
   const hdr = document.createElement("div");
   hdr.className = "section-header";
-  hdr.textContent = `${label} (${objects.length})`;
+  const isUserSection = label === "My Additions";
+  hdr.innerHTML = `<span>${label} (${objects.length})</span>${isUserSection ? '<span class="section-export" onclick="exportUserObjects()">↓ save</span>' : ""}`;
   list.appendChild(hdr);
   objects.forEach(obj => {
     const card = document.createElement("div");
@@ -617,19 +640,20 @@ const locationEl = document.getElementById("location-name");
 let geocodeTimer = null;
 
 function nomZoomFor(mapZoom) {
-  if (mapZoom < 4)  return 3;   // country
-  if (mapZoom < 6)  return 5;   // state / province
-  if (mapZoom < 9)  return 8;   // county / region
-  if (mapZoom < 12) return 10;  // city / town
-  return 14;                    // suburb / neighbourhood
+  if (mapZoom < 4) return 3;   // country
+  if (mapZoom < 7) return 5;   // state / province
+  return 10;                   // city / town (capped — never go to neighbourhood)
 }
 
 function pickLabel(addr, nomZoom) {
-  if (nomZoom <= 3)  return addr.country || "";
-  if (nomZoom <= 5)  return addr.state || addr.region || addr.country || "";
-  if (nomZoom <= 8)  return addr.county || addr.state_district || addr.state || addr.country || "";
-  if (nomZoom <= 10) return addr.city || addr.town || addr.village || addr.municipality || addr.county || addr.state || "";
-  return addr.suburb || addr.neighbourhood || addr.quarter || addr.city || addr.town || addr.village || "";
+  const country = addr.country || "";
+  if (nomZoom <= 3) return country;
+  if (nomZoom <= 5) {
+    const state = addr.state || addr.region || "";
+    return [state, country].filter(Boolean).join(", ");
+  }
+  const city = addr.city || addr.town || addr.village || addr.municipality || addr.county || addr.state || "";
+  return [city, country].filter(Boolean).join(", ");
 }
 
 async function fetchLocation(lat, lng) {
