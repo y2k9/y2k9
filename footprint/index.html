@@ -142,6 +142,31 @@
     html[data-theme="light"] .divider { background: linear-gradient(90deg, transparent, rgba(0,0,0,0.07), transparent); }
     html[data-theme="light"] .hero-pill { background: rgba(99,102,241,0.07); border-color: rgba(99,102,241,0.2); }
 
+    /* ── Override all hardcoded white/light inline-style text ───── */
+    html[data-theme="light"] h1,
+    html[data-theme="light"] h2,
+    html[data-theme="light"] h3,
+    html[data-theme="light"] h4 { color: #0f172a !important; }
+    html[data-theme="light"] [style*="color:#fff"],
+    html[data-theme="light"] [style*="color: #fff"] { color: #0f172a !important; }
+    html[data-theme="light"] [style*="color:#e4e4e7"] { color: #1e293b !important; }
+    html[data-theme="light"] [style*="color:#d4d4d8"] { color: #334155 !important; }
+    html[data-theme="light"] [style*="color:#e0e0ff"] { color: #3730a3 !important; }
+    html[data-theme="light"] [style*="color:#c4b5fd"] { color: #4f46e5 !important; }
+    html[data-theme="light"] [style*="color:#a1a1aa"] { color: #64748b !important; }
+    html[data-theme="light"] [style*="color:#71717a"] { color: #64748b !important; }
+    html[data-theme="light"] [style*="color:#52525b"] { color: #94a3b8 !important; }
+    html[data-theme="light"] [style*="color:#3f3f46"] { color: #94a3b8 !important; }
+    html[data-theme="light"] [style*="color:#27272a"] { color: #94a3b8 !important; }
+    /* dashboard specific */
+    html[data-theme="light"] [style*="background:rgba(14,14,16"],
+    html[data-theme="light"] [style*="background: rgba(14,14,16"],
+    html[data-theme="light"] [style*="background:rgba(18,18,20"],
+    html[data-theme="light"] [style*="background:rgba(22,22,24"],
+    html[data-theme="light"] [style*="background:rgba(24,24,26"] { background: #f8fafc !important; border-color: rgba(0,0,0,0.07) !important; }
+    html[data-theme="light"] [style*="background:rgba(10,10,12"] { background: #ffffff !important; border-color: rgba(0,0,0,0.07) !important; }
+    html[data-theme="light"] [style*="background:rgba(12,12,14"] { background: #f1f5f9 !important; }
+
     /* theme toggle button */
     .theme-toggle {
       width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer;
