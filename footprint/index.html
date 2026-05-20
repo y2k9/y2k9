@@ -21,6 +21,139 @@
       --muted2:   #a1a1aa;
     }
 
+    /* ── Light mode overrides ───────────────────────────────────── */
+    html[data-theme="light"] {
+      --bg:       #f8fafc;
+      --surface:  #ffffff;
+      --surface2: #f1f5f9;
+      --border:   rgba(99,102,241,0.12);
+      --text:     #0f172a;
+      --muted:    #64748b;
+      --muted2:   #94a3b8;
+    }
+    html[data-theme="light"] body { background: #f8fafc; color: #0f172a; }
+    html[data-theme="light"] ::-webkit-scrollbar-track { background: #f8fafc; }
+    html[data-theme="light"] ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+
+    /* nav */
+    html[data-theme="light"] #nav.scrolled { background: rgba(248,250,252,0.92); border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .nav-logo { color: #0f172a; }
+    html[data-theme="light"] .nav-links a { color: #64748b; }
+    html[data-theme="light"] .nav-links a:hover { color: #0f172a; }
+    html[data-theme="light"] .btn-ghost { background: rgba(0,0,0,0.05); color: #334155; border-color: rgba(0,0,0,0.1); }
+    html[data-theme="light"] .btn-ghost:hover { background: rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.14); }
+
+    /* hero */
+    html[data-theme="light"] .hero-grid {
+      background-image: linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px);
+    }
+    html[data-theme="light"] .hero-glow-a { background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%); }
+    html[data-theme="light"] .hero-glow-b { background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%); }
+    html[data-theme="light"] .hero-h1 { color: #0f172a; }
+    html[data-theme="light"] .hero-stat { background: rgba(99,102,241,0.06); border-color: rgba(99,102,241,0.18); }
+    html[data-theme="light"] .hero-sub { color: #64748b; }
+    html[data-theme="light"] .hero-hardware { color: #94a3b8; }
+    html[data-theme="light"] .hero-visual { background: rgba(255,255,255,0.95); border-color: rgba(99,102,241,0.14); box-shadow: 0 0 60px rgba(99,102,241,0.07), 0 24px 48px rgba(0,0,0,0.08); }
+    html[data-theme="light"] #fp-svg-bg { fill: #f1f5f9; }
+    html[data-theme="light"] .hcard { background: rgba(255,255,255,0.96); border-color: rgba(99,102,241,0.18); box-shadow: 0 8px 32px rgba(0,0,0,0.08); color: #334155; }
+    html[data-theme="light"] .hcard-green { color: #16a34a; }
+    html[data-theme="light"] .hcard-red   { color: #dc2626; }
+    html[data-theme="light"] .hcard-blue  { color: #4f46e5; }
+
+    /* trust */
+    html[data-theme="light"] #trust { border-color: rgba(0,0,0,0.06); }
+    html[data-theme="light"] .trust-label { color: #cbd5e1; }
+    html[data-theme="light"] .logo-item { color: #cbd5e1; }
+    html[data-theme="light"] .logo-item:hover { color: #94a3b8; }
+
+    /* problem */
+    html[data-theme="light"] .compare-card.bad { background: #ffffff; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .compare-card.good { background: rgba(99,102,241,0.04); border-color: rgba(99,102,241,0.18); }
+    html[data-theme="light"] .compare-row { border-color: rgba(0,0,0,0.05); }
+    html[data-theme="light"] .compare-row.has { color: #334155; }
+    html[data-theme="light"] .compare-row.missing { color: #cbd5e1; }
+    html[data-theme="light"] .dot-miss { background: #e2e8f0; }
+    html[data-theme="light"] .compare-tag.physical { background: rgba(0,0,0,0.05); color: #94a3b8; }
+
+    /* features */
+    html[data-theme="light"] .feature-visual { background: #ffffff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.05); }
+    html[data-theme="light"] .feature-copy h3 { color: #0f172a; }
+    html[data-theme="light"] .feature-copy p { color: #64748b; }
+    html[data-theme="light"] .chip { background: #f8fafc; border-color: rgba(0,0,0,0.08); color: #334155; }
+    html[data-theme="light"] .fbar-track { background: rgba(0,0,0,0.04); }
+    html[data-theme="light"] .rec-card { background: #f8fafc; border-color: rgba(0,0,0,0.07); }
+
+    /* how it works */
+    html[data-theme="light"] #how-it-works { background: rgba(241,245,249,0.7); }
+    html[data-theme="light"] .step h4 { color: #0f172a; }
+    html[data-theme="light"] .step p { color: #64748b; }
+    html[data-theme="light"] .steps-grid::before { background: linear-gradient(90deg, rgba(99,102,241,0.3), rgba(139,92,246,0.2), rgba(99,102,241,0.3)); }
+    html[data-theme="light"] .arch-box { background: #ffffff; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .arch-chip { background: #f8fafc; border-color: rgba(99,102,241,0.1); }
+    html[data-theme="light"] .arch-chip div:last-child { color: #94a3b8; }
+    html[data-theme="light"] .arch-arrow { color: #94a3b8; }
+
+    /* dashboard */
+    html[data-theme="light"] #dashboard::before { background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 65%); }
+    html[data-theme="light"] .dash-frame { background: #f1f5f9; border-color: rgba(0,0,0,0.09); box-shadow: 0 40px 100px rgba(0,0,0,0.08), 0 0 60px rgba(99,102,241,0.05); }
+    html[data-theme="light"] .dash-titlebar { background: #ffffff; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .dash-nav { background: #fafafa; border-color: rgba(0,0,0,0.06); }
+    html[data-theme="light"] .dash-nav-item { color: #94a3b8; }
+    html[data-theme="light"] .dash-nav-item.active { color: #6366f1; border-color: #6366f1; }
+    html[data-theme="light"] .kpi-card { background: #ffffff; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .kpi-value { color: #0f172a; }
+    html[data-theme="light"] .kpi-label { color: #94a3b8; }
+    html[data-theme="light"] .dash-panel { background: #ffffff; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .panel-title { color: #94a3b8; }
+    html[data-theme="light"] .store-table th { color: #94a3b8; border-color: rgba(0,0,0,0.06); }
+    html[data-theme="light"] .store-table td { color: #64748b; border-color: rgba(0,0,0,0.04); }
+    html[data-theme="light"] .store-table td:first-child { color: #334155; }
+    html[data-theme="light"] .rank-badge { background: rgba(99,102,241,0.1); color: #6366f1; }
+    html[data-theme="light"] .d-fbar { color: #4338ca; }
+
+    /* use cases */
+    html[data-theme="light"] .uc-card { background: #ffffff; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .uc-card:hover { border-color: rgba(99,102,241,0.25); box-shadow: 0 20px 48px rgba(99,102,241,0.07); }
+    html[data-theme="light"] .uc-card h4 { color: #0f172a; }
+    html[data-theme="light"] .uc-tag { color: #64748b; }
+    html[data-theme="light"] .uc-tag span { border-color: rgba(0,0,0,0.05); }
+
+    /* ai copilot */
+    html[data-theme="light"] #ai-copilot { background: rgba(241,245,249,0.7); }
+    html[data-theme="light"] .chat-frame { background: #ffffff; border-color: rgba(0,0,0,0.09); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
+    html[data-theme="light"] .chat-header { background: #f8fafc; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .bubble.ai { background: #f8fafc; border-color: rgba(0,0,0,0.07); color: #334155; }
+    html[data-theme="light"] .bubble.ai strong { color: #4f46e5; }
+    html[data-theme="light"] .user-avatar { background: #e2e8f0; color: #64748b; }
+    html[data-theme="light"] .chat-input { background: #f8fafc; border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] .chat-input-bar { background: #ffffff; border-color: rgba(0,0,0,0.09); color: #94a3b8; }
+
+    /* cta + footer */
+    html[data-theme="light"] #final-cta::before { background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 65%); }
+    html[data-theme="light"] .cta-box h2 { color: #0f172a; }
+    html[data-theme="light"] .cta-box p { color: #64748b; }
+    html[data-theme="light"] .cta-note { color: #94a3b8; }
+    html[data-theme="light"] footer { border-color: rgba(0,0,0,0.07); }
+    html[data-theme="light"] footer span { color: #94a3b8; }
+    html[data-theme="light"] .footer-links a { color: #94a3b8; }
+    html[data-theme="light"] .footer-links a:hover { color: #64748b; }
+
+    /* misc */
+    html[data-theme="light"] .divider { background: linear-gradient(90deg, transparent, rgba(0,0,0,0.07), transparent); }
+    html[data-theme="light"] .hero-pill { background: rgba(99,102,241,0.07); border-color: rgba(99,102,241,0.2); }
+
+    /* theme toggle button */
+    .theme-toggle {
+      width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: #a1a1aa; transition: background .2s, border-color .2s, color .2s;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    html[data-theme="light"] .theme-toggle { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #64748b; }
+    html[data-theme="light"] .theme-toggle:hover { background: rgba(0,0,0,0.08); color: #0f172a; }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -583,6 +716,10 @@
         <li><a href="#use-cases">Use cases</a></li>
       </ul>
       <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+          <svg id="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg id="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none;"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.22 3.22l1.42 1.42M11.36 11.36l1.42 1.42M3.22 12.78l1.42-1.42M11.36 4.64l1.42-1.42" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
         <a href="#" class="btn-ghost" style="padding:8px 18px;font-size:13px;">Sign in</a>
         <a href="#" class="btn-primary" style="padding:8px 18px;font-size:13px;">Book Demo</a>
       </div>
@@ -625,7 +762,7 @@
           <!-- Store floorplan SVG -->
           <svg viewBox="0 0 420 310" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:12px;">
             <!-- Background -->
-            <rect width="420" height="310" fill="#0c0c0f" rx="12"/>
+            <rect id="fp-svg-bg" width="420" height="310" fill="#0c0c0f" rx="12"/>
 
             <!-- Outer walls -->
             <rect x="18" y="18" width="384" height="274" rx="6" stroke="rgba(99,102,241,0.35)" stroke-width="1.2" fill="rgba(99,102,241,0.02)"/>
@@ -1356,6 +1493,31 @@
 
   <!-- ── SCRIPTS ───────────────────────────────────────────────── -->
   <script>
+    // Theme toggle
+    const html = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const iconMoon = document.getElementById('icon-moon');
+    const iconSun  = document.getElementById('icon-sun');
+    const saved = localStorage.getItem('fp-theme');
+    if (saved) { html.setAttribute('data-theme', saved); syncIcons(saved); }
+
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('fp-theme', next);
+      syncIcons(next);
+    });
+
+    function syncIcons(theme) {
+      if (theme === 'light') {
+        iconMoon.style.display = 'none';
+        iconSun.style.display  = 'block';
+      } else {
+        iconMoon.style.display = 'block';
+        iconSun.style.display  = 'none';
+      }
+    }
+
     // Nav scroll behaviour
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
