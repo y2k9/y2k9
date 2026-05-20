@@ -69,11 +69,19 @@
     /* problem */
     html[data-theme="light"] .compare-card.bad { background: #ffffff; border-color: rgba(0,0,0,0.07); }
     html[data-theme="light"] .compare-card.good { background: rgba(99,102,241,0.04); border-color: rgba(99,102,241,0.18); }
-    html[data-theme="light"] .compare-row { border-color: rgba(0,0,0,0.05); }
-    html[data-theme="light"] .compare-row.has { color: #334155; }
-    html[data-theme="light"] .compare-row.missing { color: #cbd5e1; }
+    html[data-theme="light"] .compare-row { border-color: rgba(0,0,0,0.06); }
+    html[data-theme="light"] .compare-row.has { color: #1e293b; }
+    html[data-theme="light"] .compare-row.missing { color: #94a3b8; }
     html[data-theme="light"] .dot-miss { background: #e2e8f0; }
     html[data-theme="light"] .compare-tag.physical { background: rgba(0,0,0,0.05); color: #94a3b8; }
+    html[data-theme="light"] .compare-card.good .compare-row.has { color: #1e293b; }
+    html[data-theme="light"] .compare-card.bad .compare-row.has { color: #64748b; }
+    html[data-theme="light"] .compare-card.good { background: rgba(99,102,241,0.05); border-color: rgba(99,102,241,0.2); }
+    html[data-theme="light"] .compare-card.bad  { background: #f8fafc; border-color: rgba(0,0,0,0.08); }
+    /* card header text in light */
+    html[data-theme="light"] [style*="color:#818cf8"] { color: #6366f1 !important; }
+    html[data-theme="light"] [style*="color:#a1a1aa"] { color: #64748b !important; }
+    html[data-theme="light"] [style*="color:#71717a"]  { color: #64748b !important; }
 
     /* features */
     html[data-theme="light"] .feature-visual { background: #ffffff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.05); }
@@ -309,10 +317,10 @@
     }
     .compare-tag.ecom { background:rgba(99,102,241,0.15); color:#818cf8; }
     .compare-tag.physical { background:rgba(113,113,122,0.12); color:#52525b; }
-    .compare-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:14px; }
+    .compare-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.07); font-size:14px; }
     .compare-row:last-child { border-bottom:none; }
-    .compare-row.has { color:#d4d4d8; }
-    .compare-row.missing { color:#3f3f46; }
+    .compare-row.has { color:#e4e4e7; }
+    .compare-row.missing { color:#6b7280; }
     .dot-has { width:7px; height:7px; border-radius:50%; background:#6366f1; flex-shrink:0; box-shadow:0 0 8px rgba(99,102,241,.6); }
     .dot-miss { width:7px; height:7px; border-radius:50%; background:#27272a; flex-shrink:0; }
     @media(max-width:640px){ .compare-grid{ grid-template-columns:1fr; } }
@@ -931,7 +939,7 @@
             <span style="font-size:28px;">💻</span>
             <div>
               <div style="font-size:13px;font-weight:700;color:#818cf8;letter-spacing:.07em;text-transform:uppercase;">E-commerce</div>
-              <div style="font-size:12px;color:#52525b;">Full visibility stack</div>
+              <div style="font-size:12px;color:#a1a1aa;">Full visibility stack</div>
             </div>
             <span style="margin-left:auto;font-size:11px;font-weight:700;background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.22);border-radius:6px;padding:4px 10px;white-space:nowrap;">Complete ✓</span>
           </div>
@@ -949,12 +957,12 @@
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
             <span style="font-size:28px;">🏪</span>
             <div>
-              <div style="font-size:13px;font-weight:700;color:#52525b;letter-spacing:.07em;text-transform:uppercase;">Physical Retail</div>
-              <div style="font-size:12px;color:#3f3f46;">Flying blind</div>
+              <div style="font-size:13px;font-weight:700;color:#a1a1aa;letter-spacing:.07em;text-transform:uppercase;">Physical Retail</div>
+              <div style="font-size:12px;color:#71717a;">Flying blind</div>
             </div>
             <span style="margin-left:auto;font-size:11px;font-weight:700;background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.18);border-radius:6px;padding:4px 10px;white-space:nowrap;">Data gap ✗</span>
           </div>
-          <div class="compare-row has" style="color:#52525b;"><span style="font-size:15px;flex-shrink:0;">📋</span>End-of-day sales report</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">📋</span>End-of-day sales report</div>
           <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">🚪</span>Door footfall count (that's it)</div>
           <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">❌</span>No in-store heatmaps</div>
           <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">❌</span>No layout testing</div>
