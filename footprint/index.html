@@ -124,6 +124,7 @@
     html[data-theme="light"] .chat-header { background: #f8fafc; border-color: rgba(0,0,0,0.07); }
     html[data-theme="light"] .bubble.ai { background: #f8fafc; border-color: rgba(0,0,0,0.07); color: #334155; }
     html[data-theme="light"] .bubble.ai strong { color: #4f46e5; }
+    html[data-theme="light"] .bubble.user { background: rgba(99,102,241,0.1) !important; border-color: rgba(99,102,241,0.22) !important; color: #1e1b4b !important; }
     html[data-theme="light"] .user-avatar { background: #e2e8f0; color: #64748b; }
     html[data-theme="light"] .chat-input { background: #f8fafc; border-color: rgba(0,0,0,0.07); }
     html[data-theme="light"] .chat-input-bar { background: #ffffff; border-color: rgba(0,0,0,0.09); color: #94a3b8; }
@@ -363,6 +364,8 @@
     /* heatmap grid */
     .hmap { display:grid; grid-template-columns:repeat(8,1fr); gap:4px; }
     .hcell { aspect-ratio:1; border-radius:4px; }
+    .floor-gap { fill: #0c0c0f; }
+    html[data-theme="light"] .floor-gap { fill: #ffffff; }
     /* recommendation cards */
     .rec-card {
       background:rgba(14,14,16,0.8); border:1px solid rgba(255,255,255,0.07);
@@ -922,27 +925,42 @@
       <div class="compare-grid">
 
         <!-- E-commerce -->
+        <!-- E-commerce -->
         <div class="compare-card good reveal delay-1">
-          <span class="compare-tag ecom">E-commerce today</span>
-          <div class="compare-row has"><span class="dot-has"></span>Clickstreams &amp; session replays</div>
-          <div class="compare-row has"><span class="dot-has"></span>Conversion funnels</div>
-          <div class="compare-row has"><span class="dot-has"></span>Scroll &amp; click heatmaps</div>
-          <div class="compare-row has"><span class="dot-has"></span>A/B testing on layouts</div>
-          <div class="compare-row has"><span class="dot-has"></span>Real-time attribution</div>
-          <div class="compare-row has"><span class="dot-has"></span>Product engagement analytics</div>
-          <div class="compare-row has"><span class="dot-has"></span>Demographic breakdowns</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+            <span style="font-size:28px;">💻</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#818cf8;letter-spacing:.07em;text-transform:uppercase;">E-commerce</div>
+              <div style="font-size:12px;color:#52525b;">Full visibility stack</div>
+            </div>
+            <span style="margin-left:auto;font-size:11px;font-weight:700;background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.22);border-radius:6px;padding:4px 10px;white-space:nowrap;">Complete ✓</span>
+          </div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>Clickstreams &amp; session replays</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>Conversion funnels</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>Scroll &amp; click heatmaps</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>A/B testing on layouts</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>Real-time attribution</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>Product engagement analytics</div>
+          <div class="compare-row has"><span style="font-size:15px;flex-shrink:0;">✅</span>Demographic breakdowns</div>
         </div>
 
         <!-- Physical retail -->
         <div class="compare-card bad reveal delay-2">
-          <span class="compare-tag physical">Physical retail today</span>
-          <div class="compare-row has" style="color:#52525b;"><span class="dot-miss"></span>End-of-day sales report</div>
-          <div class="compare-row missing"><span class="dot-miss"></span>Footfall counter (door only)</div>
-          <div class="compare-row missing"><span class="dot-miss"></span>No in-store heatmaps</div>
-          <div class="compare-row missing"><span class="dot-miss"></span>No layout testing</div>
-          <div class="compare-row missing"><span class="dot-miss"></span>No product engagement data</div>
-          <div class="compare-row missing"><span class="dot-miss"></span>No fitting room analytics</div>
-          <div class="compare-row missing"><span class="dot-miss"></span>Guesswork</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+            <span style="font-size:28px;">🏪</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#52525b;letter-spacing:.07em;text-transform:uppercase;">Physical Retail</div>
+              <div style="font-size:12px;color:#3f3f46;">Flying blind</div>
+            </div>
+            <span style="margin-left:auto;font-size:11px;font-weight:700;background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.18);border-radius:6px;padding:4px 10px;white-space:nowrap;">Data gap ✗</span>
+          </div>
+          <div class="compare-row has" style="color:#52525b;"><span style="font-size:15px;flex-shrink:0;">📋</span>End-of-day sales report</div>
+          <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">🚪</span>Door footfall count (that's it)</div>
+          <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">❌</span>No in-store heatmaps</div>
+          <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">❌</span>No layout testing</div>
+          <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">❌</span>No product engagement data</div>
+          <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">❌</span>No fitting room analytics</div>
+          <div class="compare-row missing"><span style="font-size:15px;flex-shrink:0;">🤷</span>Guesswork</div>
         </div>
 
       </div>
@@ -1067,12 +1085,72 @@
         </div>
         <div class="feature-visual reveal delay-2">
           <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#52525b;margin-bottom:16px;">Store Heatmap — Ground Floor</div>
-          <!-- heatmap grid -->
-          <div class="hmap" id="heatmap"></div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:16px;">
-            <div style="font-size:11px;color:#3f3f46;">Low</div>
-            <div style="flex:1;height:4px;border-radius:9999px;background:linear-gradient(90deg,#1c1c1f,#312e81,#4338ca,#6366f1,#a855f7);"></div>
-            <div style="font-size:11px;color:#3f3f46;">High</div>
+          <!-- SVG store floorplan heatmap -->
+          <svg viewBox="0 0 460 310" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:8px;">
+            <defs>
+              <radialGradient id="hx" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#7c3aed" stop-opacity="0.82"/><stop offset="55%" stop-color="#6366f1" stop-opacity="0.35"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
+              <radialGradient id="hh" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6366f1" stop-opacity="0.65"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
+              <radialGradient id="hm" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#818cf8" stop-opacity="0.45"/><stop offset="100%" stop-color="#818cf8" stop-opacity="0"/></radialGradient>
+              <radialGradient id="hl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.28"/><stop offset="100%" stop-color="#a5b4fc" stop-opacity="0"/></radialGradient>
+            </defs>
+
+            <!-- Heat blobs (drawn first, under fixtures) -->
+            <ellipse cx="120" cy="85"  rx="95" ry="72" fill="url(#hx)"/><!-- Tops: hottest -->
+            <ellipse cx="228" cy="270" rx="75" ry="45" fill="url(#hh)"/><!-- Entrance -->
+            <ellipse cx="75"  cy="238" rx="58" ry="44" fill="url(#hm)"/><!-- Checkout -->
+            <ellipse cx="240" cy="95"  rx="62" ry="52" fill="url(#hm)"/><!-- Denim -->
+            <ellipse cx="230" cy="180" rx="52" ry="42" fill="url(#hl)"/><!-- New Arrivals -->
+            <ellipse cx="380" cy="195" rx="54" ry="65" fill="url(#hl)"/><!-- Fitting rooms -->
+            <!-- Dead zone (far left mid) — intentionally no heat -->
+
+            <!-- Store floor -->
+            <rect x="10" y="10" width="440" height="280" rx="6" fill="rgba(99,102,241,0.02)" stroke="rgba(99,102,241,0.28)" stroke-width="1.4"/>
+            <!-- Entrance gap in bottom wall -->
+            <rect x="178" y="286" width="104" height="5" class="floor-gap"/>
+
+            <!-- Display fixtures row 1 -->
+            <rect x="38"  y="28" width="80" height="46" rx="4" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.4)" stroke-width="1"/>
+            <rect x="158" y="28" width="78" height="46" rx="4" fill="rgba(99,102,241,0.08)" stroke="rgba(99,102,241,0.28)" stroke-width="1"/>
+            <rect x="278" y="28" width="78" height="46" rx="4" fill="rgba(99,102,241,0.05)" stroke="rgba(99,102,241,0.18)" stroke-width="1"/>
+
+            <!-- Display fixtures row 2 -->
+            <rect x="38"  y="138" width="72" height="78" rx="4" fill="rgba(99,102,241,0.04)" stroke="rgba(99,102,241,0.14)" stroke-width="1"/>
+            <rect x="174" y="148" width="104" height="56" rx="4" fill="rgba(99,102,241,0.07)" stroke="rgba(99,102,241,0.22)" stroke-width="1"/>
+
+            <!-- Fitting rooms -->
+            <rect x="342" y="138" width="88" height="106" rx="4" fill="rgba(99,102,241,0.04)" stroke="rgba(99,102,241,0.18)" stroke-width="1"/>
+            <line x1="386" y1="138" x2="386" y2="244" stroke="rgba(99,102,241,0.15)" stroke-width="1" stroke-dasharray="3 3"/>
+
+            <!-- Checkout -->
+            <rect x="28" y="214" width="104" height="48" rx="4" fill="rgba(99,102,241,0.05)" stroke="rgba(99,102,241,0.16)" stroke-width="1"/>
+
+            <!-- Zone labels -->
+            <text x="78"  y="50"  fill="rgba(196,181,253,0.95)" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">TOPS</text>
+            <text x="197" y="50"  fill="rgba(196,181,253,0.75)" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">DENIM</text>
+            <text x="317" y="50"  fill="rgba(196,181,253,0.55)" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">ACCESSORIES</text>
+            <text x="74"  y="182" fill="rgba(196,181,253,0.45)" font-size="8"   font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">Jackets</text>
+            <text x="226" y="180" fill="rgba(196,181,253,0.65)" font-size="8"   font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">New Arrivals</text>
+            <text x="386" y="198" fill="rgba(196,181,253,0.5)"  font-size="8"   font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">FITTING</text>
+            <text x="80"  y="243" fill="rgba(196,181,253,0.5)"  font-size="8"   font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">CHECKOUT</text>
+            <text x="228" y="301" fill="rgba(99,102,241,0.45)"  font-size="7.5" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif" letter-spacing="1">ENTRANCE</text>
+
+            <!-- 🔥 Hot badge on Tops -->
+            <rect x="48" y="68" width="60" height="17" rx="4" fill="rgba(124,58,237,0.75)"/>
+            <text x="78" y="80" fill="white" font-size="8.5" font-weight="700" text-anchor="middle" font-family="Inter,sans-serif">🔥 68% traffic</text>
+
+            <!-- Dead zone badge -->
+            <rect x="26" y="148" width="76" height="16" rx="3" fill="rgba(30,27,75,0.5)"/>
+            <text x="64" y="160" fill="rgba(148,163,184,0.7)" font-size="8" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">💀 Dead zone</text>
+
+            <!-- Bottleneck badge -->
+            <rect x="28" y="256" width="104" height="16" rx="3" fill="rgba(239,68,68,0.2)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+            <text x="80" y="268" fill="#fca5a5" font-size="8" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">⚠ 4 min avg queue</text>
+          </svg>
+          <!-- Legend -->
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px;">
+            <span style="font-size:11px;color:#3f3f46;">Low traffic</span>
+            <div style="flex:1;height:4px;border-radius:9999px;background:linear-gradient(90deg,#1c1c1f,#312e81,#4338ca,#6366f1,#7c3aed);"></div>
+            <span style="font-size:11px;color:#3f3f46;">High traffic</span>
           </div>
         </div>
       </div>
@@ -1448,27 +1526,27 @@
           </div>
           <div class="chat-row">
             <div class="ai-avatar">a</div>
-            <div class="bubble ai">The denim display in Store 12 sits in a <strong>low-traffic zone</strong> — only 18% of visitors pass it. Customers who do reach it convert at <strong>11.4%</strong>, which is above average. The issue is discovery, not product appeal. Moving the display 4m toward the entrance is projected to increase denim revenue by <strong>+₹38,000/month</strong>.</div>
+            <div class="bubble ai"><strong>It's a placement problem, not a product problem.</strong> Only 18% of visitors walk past the denim display. The ones who do convert at 11.4% — well above average. Move it 4m toward the entrance. Est. uplift: <strong>+₹38,000/month.</strong></div>
           </div>
 
           <!-- Exchange 2 -->
           <div class="chat-row user">
             <div class="user-avatar">Y</div>
-            <div class="bubble user">Which displays perform best for women 18–25?</div>
+            <div class="bubble user">Which displays work best for women 18–25?</div>
           </div>
           <div class="chat-row">
             <div class="ai-avatar">a</div>
-            <div class="bubble ai">The <strong>front-centre capsule table</strong> leads with a 62% engagement rate for this segment — 3× the store average. The <strong>oversized silhouette rail</strong> on the right wall is second at 48%. Both correlate with high fitting room conversion for this cohort. Consider replicating this layout in Stores 4 and 7.</div>
+            <div class="bubble ai"><strong>The front-centre capsule table.</strong> 62% engagement with this segment — 3× the store average. Replicate it in Stores 4 and 7 for an easy conversion win.</div>
           </div>
 
           <!-- Exchange 3 -->
           <div class="chat-row user">
             <div class="user-avatar">Y</div>
-            <div class="bubble user">Which of my stores need layout optimisation?</div>
+            <div class="bubble user">Which stores need layout work?</div>
           </div>
           <div class="chat-row">
             <div class="ai-avatar">a</div>
-            <div class="bubble ai"><strong>Stores 4, 7, and 11</strong> have checkout bottlenecks reducing conversion by an estimated 12–15%. Store 9 has a dead zone covering ~30% of its floor area. I've generated prioritised layout recommendations for all four — want me to pull them up?</div>
+            <div class="bubble ai"><strong>Stores 4, 7, and 11</strong> — checkout bottlenecks costing ~12–15% conversion each. <strong>Store 9</strong> has a dead zone covering 30% of its floor. I've queued fixes for all four. Want to review them?</div>
           </div>
         </div>
 
@@ -1575,31 +1653,6 @@
       });
     }
 
-    // Heatmap grid
-    const heatmap = document.getElementById('heatmap');
-    if (heatmap) {
-      // intensity map: rows × cols (0–1), higher = hotter
-      const intensity = [
-        [0.1,0.2,0.5,0.9,0.9,0.5,0.2,0.1],
-        [0.1,0.3,0.7,1.0,1.0,0.6,0.2,0.1],
-        [0.2,0.4,0.6,0.8,0.7,0.4,0.2,0.1],
-        [0.3,0.5,0.5,0.6,0.5,0.3,0.1,0.1],
-        [0.4,0.6,0.4,0.4,0.3,0.2,0.1,0.1],
-        [0.5,0.7,0.3,0.3,0.2,0.2,0.1,0.0],
-        [0.3,0.5,0.3,0.2,0.2,0.1,0.1,0.0],
-        [0.2,0.3,0.2,0.5,0.8,0.3,0.1,0.0],
-      ];
-      intensity.flat().forEach(v => {
-        const cell = document.createElement('div');
-        cell.className = 'hcell';
-        const alpha = v * 0.85 + 0.04;
-        if (v > 0.7)      cell.style.background = `rgba(139,92,246,${alpha})`;
-        else if (v > 0.4) cell.style.background = `rgba(99,102,241,${alpha})`;
-        else if (v > 0.15) cell.style.background = `rgba(67,56,202,${alpha * 0.8})`;
-        else              cell.style.background = `rgba(30,27,75,${alpha * 0.6})`;
-        heatmap.appendChild(cell);
-      });
-    }
   </script>
 </body>
 </html>
