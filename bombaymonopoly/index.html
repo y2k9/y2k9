@@ -6,19 +6,26 @@
   <title>Bombay Monopoly</title>
   <link rel="icon" href="../favicon.jpg" />
   <style>
+    @font-face {
+      font-family: 'Mostra Nuova';
+      src: url('./MostraNuova.otf') format('opentype');
+      font-weight: 700;
+      font-display: swap;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #f5f0e8;
+      background: #ffffff;
       color: #111;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Mostra Nuova', Georgia, serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     p {
-      font-size: 16px;
-      letter-spacing: 0.04em;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      font-weight: 700;
     }
     @keyframes ellipsis {
       0%   { content: '.'; }
