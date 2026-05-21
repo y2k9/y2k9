@@ -5,74 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bombay Monopoly</title>
   <link rel="icon" href="../favicon.jpg" />
-  <meta http-equiv="refresh" content="0; url=https://bombay-monopoly-production.up.railway.app" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
+      background: #f5f0e8;
+      color: #111;
       font-family: 'Segoe UI', sans-serif;
-      background: #1b3f7b;
-      color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .card {
-      text-align: center;
-      padding: 48px 40px;
-    }
-    .title {
-      font-size: 48px;
-      font-weight: 900;
-      color: #f26522;
+    p {
+      font-size: 16px;
       letter-spacing: 0.04em;
-      line-height: 1;
     }
-    .sub {
-      font-size: 22px;
-      font-weight: 700;
-      background: #e2231a;
-      display: inline-block;
-      padding: 4px 16px;
-      margin-top: 8px;
-      letter-spacing: 0.06em;
+    @keyframes ellipsis {
+      0%   { content: '.'; }
+      33%  { content: '..'; }
+      66%  { content: '...'; }
+      100% { content: ''; }
     }
-    .tagline {
-      font-size: 13px;
-      background: #ffc20e;
-      color: #e2231a;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      padding: 4px 12px;
-      margin-top: 8px;
-      display: inline-block;
+    .dots::after {
+      content: '';
+      animation: ellipsis 1.2s steps(1) infinite;
     }
-    .msg {
-      margin-top: 32px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-    }
-    .link {
-      display: inline-block;
-      margin-top: 12px;
-      color: #ffc20e;
-      font-weight: 700;
-      font-size: 15px;
-      text-decoration: none;
-    }
-    .link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="title">BOMBAY</div>
-    <div class="sub">MONOPOLY</div>
-    <div class="tagline">HORN OK PLEASE</div>
-    <p class="msg">Redirecting to the game…</p>
-    <a class="link" href="https://bombay-monopoly-production.up.railway.app">
-      Click here if not redirected →
-    </a>
-  </div>
+  <p>Setting up game<span class="dots"></span></p>
   <script>
     window.location.replace("https://bombay-monopoly-production.up.railway.app");
   </script>
