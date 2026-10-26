@@ -1,0 +1,1 @@
+function e(e,t=`Player`){return typeof e==`string`&&[...e.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,``).trim()].slice(0,20).join(``)||t}export{e as t};
